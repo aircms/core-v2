@@ -1,0 +1,8 @@
+<?php
+
+/** @var array $filter */
+$filter = $this->filter;
+?>
+<input name="filter[<?php echo $filter['by']; ?>]"
+       value="<?php echo $filter['value']; ?>"
+       type="hidden"/>

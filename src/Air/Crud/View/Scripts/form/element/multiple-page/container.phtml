@@ -1,0 +1,29 @@
+<?php
+
+use Air\Form\Element\Page;
+
+/** @var Page $page */
+$page = $this->page;
+?>
+
+<div class="card bg-body-tertiary my-3" data-admin-form-element-group-multiple-page-item-container>
+  <div class="card-body p-3 pb-0">
+    <div class="d-flex">
+      <div class="flex-grow-1">
+        <?php echo $page; ?>
+      </div>
+      <div class="ms-3">
+        <a class="btn btn-danger px-3"
+           data-mdb-ripple-init
+           data-mdb-tooltip-init
+           data-mdb-placement="bottom"
+           title="<?php echo \Air\Crud\Locale::t('Remove?'); ?>"
+           data-admin-form-element-multiple-page-item-remove>
+          <i class="fas fa-remove"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php echo $this->partial('form/element/multiple-page/toolbar'); ?>

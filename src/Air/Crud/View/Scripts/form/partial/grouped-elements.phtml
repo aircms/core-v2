@@ -1,0 +1,82 @@
+<?php
+
+use Air\Form\Element\ElementAbstract;
+use Air\Form\Element\Group;
+use Air\Form\Element\Hidden;
+use Air\Form\Element\Model;
+use Air\Form\Element\MultipleText;
+use Air\Form\Element\RichContent;
+use Air\Form\Element\Tab;
+use Air\Form\Element\Tiny;
+use Air\Form\Form;
+
+/** @var Form $form */
+$form = $this->form;
+
+$elements = [];
+
+foreach ($form->getElements() as $element) {
+  if (!($element instanceof Hidden) && !($element instanceof Tab)) {
+    $element->setContainerTemplate('form/element/partial/minimized');
+    $elements[$element->getName()] = $element;
+  }
+}
+
+$isCard = function (ElementAbstract $element): bool {
+  return (
+    !($element instanceof Group)
+    && !($element instanceof RichContent)
+    && !($element instanceof MultipleText)
+    && !($element instanceof Model)
+    && !($element instanceof Tiny)
+  );
+}
+
+?>
+
+<?php foreach ($form->getElementsMap() as $tabTitle => $tab) : ?>
+
+  <div class="rounded-4 w-100" data-admin-tab-content-item>
+
+    <div class="card bg-body-secondary p-3 d-flex flex-column gap-4">
+
+      <?php foreach ($tab as $groupTitle => $group) : ?>
+
+        <div class="d-flex gap-3 align-items-start">
+
+          <?php if (is_string($groupTitle)) : ?>
+            <div class="admin-form-label">
+              <div class="h6 m-0 w-100">
+                <?php echo $groupTitle; ?>
+              </div>
+            </div>
+          <?php endif; ?>
+
+          <div class="d-flex gap-3 flex-grow-1">
+            <?php foreach ($group as $elementName) : ?>
+
+              <?php if (!is_string($groupTitle) && $label = $elements[$elementName]->getLabel()) : ?>
+                <div class="admin-form-label">
+                  <div class="h6 m-0 w-100">
+                    <?php echo $label; ?>
+                  </div>
+                </div>
+              <?php endif; ?>
+
+              <div class="col">
+
+                <div class="<?php if ($isCard($elements[$elementName])) : ?>card p-3<?php endif; ?>">
+                  <?php echo $elements[$elementName]; ?>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
+      <?php endforeach; ?>
+
+    </div>
+
+  </div>
+
+<?php endforeach; ?>

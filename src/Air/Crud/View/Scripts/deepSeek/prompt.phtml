@@ -1,0 +1,91 @@
+<?php
+
+use Air\Crud\Controller\MultipleHelper\Accessor\Ui;
+use Air\Crud\Model\Language;
+
+/** @var mixed $preData */
+$preData = $this->preData;
+
+/** @var string $name */
+$name = $this->name;
+
+/** @var string $value */
+$value = $this->value;
+
+$language = Language::fetchOne($this->language);
+
+if (!$language) {
+  $language = Language::fetchOne([
+    'isDefault' => true
+  ]);
+}
+
+?>
+
+<form data-seep-seek-modal data-deep-seek-form>
+
+  <?php if ($preData) : ?>
+    <textarea class="d-none" name="preData"><?php echo json_encode($preData); ?></textarea>
+  <?php endif; ?>
+  <input type="hidden" name="name" value="<?php echo $name; ?>">
+
+  <div class="p-3">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-outline h-100" data-mdb-input-init>
+          <textarea class="form-control form-control-lg h-100" name="value" id="value"><?php echo $value; ?></textarea>
+          <label class="form-label" for="value" data-locale="Value"></label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="d-flex flex-column gap-4">
+          <div class="btn-group w-100 rounded-4" data-admin-select>
+            <button class="btn btn-primary btn-block text-start px-3"
+                    type="button"
+                    data-mdb-dropdown-init
+                    data-mdb-ripple-init
+                    data-admin-select-title>
+            </button>
+            <button type="button"
+                    class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                    data-mdb-dropdown-init
+                    data-mdb-ripple-init></button>
+            <input name="language" value="<?php echo $language->id; ?>" type="hidden" data-admin-select-input/>
+            <ul class="dropdown-menu w-100">
+              <?php foreach (Language::fetchAll() as $lang) : ?>
+                <li>
+                  <a class="dropdown-item"
+                     role="button"
+                     data-value="<?php echo $lang->id; ?>"
+                     data-admin-select-option
+                     <?php if ($lang->key === $language->key) : ?>data-selected<?php endif; ?>>
+                    <div class="d-flex align-items-center">
+                      <div class="admin-select-image rounded-4 me-3 bg-image"
+                           data-admin-async-image="<?php echo $lang->image->getThumbnail(); ?>"></div>
+                      <div
+                        class="flex-grow-1 text-wrap max-lines-2 pe-3 admin-select-button-title d-flex align-items-center gap-2">
+                        <?php echo $lang->title; ?>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+          <div class="form-outline" data-mdb-input-init>
+            <textarea class="form-control form-control-lg" name="prompt" id="prompt" rows="3"></textarea>
+            <label class="form-label" for="prompt" data-locale="Prompt"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary btn-lg px-3" data-mdb-ripple-init data-deep-seek-apply>
+      <i class="fas fa-check me-1"></i> <?php echo \Air\Crud\Locale::t('Apply'); ?>
+    </button>
+    <button type="button" class="btn btn-primary btn-lg px-3" data-mdb-ripple-init data-deep-seek-ask>
+      <i class="fas fa-question me-1"></i> <?php echo \Air\Crud\Locale::t('Ask DeepSeek'); ?>
+    </button>
+  </div>
+</form>

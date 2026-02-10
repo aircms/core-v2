@@ -1,0 +1,117 @@
+<?php
+
+use Air\Form\Element\MultipleModel;
+use Air\Crud\Locale;
+
+/** @var MultipleModel $element */
+$element = $this->element;
+
+$value = $element->getValue();
+$name = $element->getName();
+
+$model = $element->getModel();
+
+$hasImage = $element->getModel()->getMeta()->hasProperty('image');
+$hasEnabled = $element->getModel()->getMeta()->hasProperty('enabled');
+$hasLanguage = $element->getModel()->getMeta()->hasProperty('language');
+?>
+
+<div data-admin-form-multiple-model="<?php echo $name; ?>"
+     data-admin-form-multiple-model-name="<?php echo $element->getModel()::class; ?>">
+
+  <textarea class="d-none" name="<?php echo $name; ?>"><?php echo json_encode($element->getRawValue()); ?></textarea>
+
+  <a class="btn btn-primary btn-block" data-admin-form-multiple-model-add>
+    <i class="fas fa-plus"></i>
+    <?php echo Locale::t('Add entity'); ?>
+  </a>
+
+  <div data-admin-form-multiple-model-list-container>
+    <div class="d-flex flex-wrap" data-admin-form-multiple-model-list>
+
+      <?php foreach ($value as $index => $item) : ?>
+        <?php $item = is_string($item) ? $model::fetchOne(['id' => $item]) : $item; ?>
+
+        <?php
+        if (!$item) {
+          continue;
+        }
+        ?>
+
+        <div
+          class="bg-body-tertiary rounded-4 shadow-5-strong mt-3 me-3 position-relative d-flex flex-row align-items-center admin-form-multiple-model"
+          data-admin-form-multiple-model-item-id="<?php echo $item->id; ?>"
+          role="button">
+
+          <?php if ($hasEnabled && $item->enabled) : ?>
+            <div
+              class="admin-form-multiple-model-activity rounded-pill bg-success position-absolute top-0 start-0"></div>
+          <?php elseif ($hasEnabled && !$item->enabled) : ?>
+            <div
+              class="admin-form-multiple-model-activity rounded-pill bg-danger position-absolute top-0 start-0"></div>
+          <?php endif; ?>
+
+          <?php if ($hasImage) : ?>
+            <div class="bg-image rounded-4 me-3" data-admin-async-image="<?php echo $item->image?->getSrc(); ?>"></div>
+          <?php endif; ?>
+
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <div class="h6 m-0 max-lines-3 small lh-1">
+              <?php foreach ($element->getField() as $field) : ?>
+                <?php echo $item->{$field}; ?>
+              <?php endforeach; ?>
+            </div>
+            <?php if ($hasLanguage && $item->language?->key) : ?>
+              <div class="badge badge-primary">
+                <img src="<?php echo $item->language->image->getSrc(); ?>" class="me-1" style="height: 10px;">
+                <?php echo strtoupper($item->language->key); ?>
+              </div>
+            <?php endif; ?>
+          </div>
+          <a class="btn btn-danger px-3 py-3 d-flex align-items-center ms-3" data-admin-form-multiple-model-item-delete>
+            <i class="fas fa-close"></i>
+          </a>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</div>
+
+<template type="text/html" data-admin-form-multiple-model-template="<?php echo $name; ?>">
+
+  <div
+    class="bg-body-tertiary rounded-4 shadow-5-strong mt-3 me-3 position-relative d-flex flex-row align-items-center admin-form-multiple-model"
+    data-admin-form-multiple-model-item-id="{{id}}"
+    role="button">
+
+    <?php if ($hasEnabled) : ?>
+      <div
+        class="admin-form-multiple-model-activity rounded-pill bg-success position-absolute top-0 start-0 d-none"
+        data-admin-form-multiple-model-item-activity="enabled"></div>
+      <div
+        class="admin-form-multiple-model-activity rounded-pill bg-danger position-absolute top-0 start-0 d-none"
+        data-admin-form-multiple-model-item-activity="disabled"></div>
+    <?php endif; ?>
+
+    <?php if ($hasImage) : ?>
+      <div class="bg-image rounded-4 me-3" data-admin-async-image="{{image}}"></div>
+    <?php endif; ?>
+
+    <div class="d-flex align-items-center justify-content-between gap-2">
+      <div class="h6 m-0 max-lines-3 small lh-1">
+        <?php foreach ($element->getField() as $field) : ?>
+          {{<?php echo $field; ?>}}
+        <?php endforeach; ?>
+      </div>
+      <?php if ($hasLanguage) : ?>
+        <div class="badge badge-primary">
+          <img src="{{languageImage}}" class="me-1" style="height: 10px;">
+          {{languageKey}}
+        </div>
+      <?php endif; ?>
+    </div>
+    <a class="btn btn-danger px-3 py-3 d-flex align-items-center ms-3" data-admin-form-multiple-model-item-delete>
+      <i class="fas fa-close"></i>
+    </a>
+  </div>
+</template>

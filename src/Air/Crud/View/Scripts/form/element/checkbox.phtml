@@ -1,0 +1,21 @@
+<?php
+
+use Air\Form\Element\Checkbox;
+
+/** @var Checkbox $element */
+$element = $this->element;
+?>
+<div class="form-check form-switch">
+  <input class="form-check-input"
+         type="checkbox"
+         role="switch"
+         value="1"
+         id="<?php echo $element->getName(); ?>"
+         name="<?php echo $element->getName(); ?>"
+         data-deactivate='<?php echo json_encode($element->getDeactivate()); ?>'
+         data-deactivate-when="<?php echo $element->getDeactivateWhen() ? 'true' : 'false'; ?>"
+    <?php if ($element->getValue()) : ?> checked="checked" <?php endif; ?>>
+  <label for="<?php echo $element->getName(); ?>" class="ms-1">
+    <?php echo $element->getLabel(); ?>
+  </label>
+</div>

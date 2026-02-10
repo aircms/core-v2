@@ -1,0 +1,174 @@
+<?php
+
+/** @var array $headerRow */
+
+use Air\Model\ModelAbstract;
+use Air\Type\File;
+
+$header = $this->header;
+
+/** @var ModelAbstract $row */
+$row = $this->row;
+
+foreach ($header as $key => $col) : ?>
+
+  <?php if (isset($col['source'])) $col['type'] = 'custom'; ?>
+
+  <?php $type = $col['type'] ?? 'text'; ?>
+  <?php $size = $col['size'] ?? ''; ?>
+  <?php if (is_numeric($key)) $key = $col['by'] ?? $key; ?>
+
+  <?php if ($type == 'bool') : ?>
+    <td class="text-center admin-table-row-bool">
+      <?php if ($row->$key) : ?>
+        <i class="fas fa-check text-success"></i>
+      <?php else: ?>
+        <i class="fas fa-ban text-danger"></i>
+      <?php endif; ?>
+    </td>
+
+  <?php elseif ($type == 'icon') : ?>
+    <td class="text-center admin-table-row-bool">
+      <i class="material-symbols-outlined" style=""><?php echo $row->$key; ?></i>
+    </td>
+
+  <?php elseif ($type == 'faIcon') : ?>
+    <td class="text-center admin-table-row-bool">
+      <i class="fs-2 fa-<?php echo $row->$key?->getIcon(); ?> <?php echo $row->$key?->getStyle(); ?>"></i>
+    </td>
+
+
+  <?php elseif ($type == 'longtext') : ?>
+    <td class="admin-table-row-default <?php echo $size; ?>">
+      <?php $longText = htmlspecialchars(mb_substr(strip_tags($row->$key ?? ''), 0, 150));
+      echo $longText . (strlen($row->$key ?? '') > 150 ? '...' : ''); ?>
+    </td>
+
+  <?php elseif ($type == 'link') : ?>
+    <td class="admin-table-row-link">
+      <a data-force="true" href="<?php echo $row->$key; ?>" target="_blank">
+        <?php echo $row->$key; ?>
+      </a>
+    </td>
+
+  <?php elseif ($type == 'phone') : ?>
+    <td class="admin-table-row-phone">
+      <a data-force="true" href="tel:<?php echo $row->$key; ?>">
+        <?php echo $row->$key; ?>
+      </a>
+    </td>
+
+  <?php elseif ($type == 'email') : ?>
+    <td class=admin-table-row-email">
+      <a data-force="true" href="mailto:<?php echo $row->$key; ?>">
+        <?php echo $row->$key; ?>
+      </a>
+    </td>
+
+  <?php elseif ($type == 'date') : ?>
+    <td class="admin-table-row-date">
+      <?php echo date('Y/m/d', $row->$key); ?>
+    </td>
+
+  <?php elseif ($type == 'dateTime') : ?>
+    <td class="admin-table-row-datetime text-truncate">
+      <?php echo date('Y/m/d H:i', $row->$key ?? $row->{$col['by']}); ?>
+    </td>
+
+  <?php elseif ($type == 'model') : ?>
+    <td class="admin-table-row-model">
+      <div class="d-flex align-items-center">
+        <?php /** @var ModelAbstract $model */ ?>
+        <?php $model = $row[$key]; ?>
+
+        <?php if ($model && $model->getMeta()->hasProperty('image')) : ?>
+          <div class="bg-image rounded-4 shadow-5-strong me-3"
+               role="button"
+               data-admin-embed-modal
+               data-admin-embed-modal-alt="<?php echo $row[$key]->image?->getAlt() ?? ''; ?>"
+               data-admin-embed-modal-title="<?php echo $row[$key]->image?->getTitle() ?? ''; ?>"
+               data-admin-embed-modal-src="<?php echo $row[$key]->image?->getSrc() ?? ''; ?>"
+               data-admin-embed-modal-mime="<?php echo $row[$key]->image?->getMime() ?? ''; ?>"
+
+               data-admin-async-image="<?php echo $row[$key]->image?->getThumbnail() ?? ''; ?>"
+               data-mdb-ripple-init></div>
+        <?php endif; ?>
+        <span><?php echo $model?->{$col['field']}; ?></span>
+      </div>
+    </td>
+
+  <?php elseif ($type == 'modelTree') : ?>
+    <td class="admin-table-row-model">
+
+      <?php /** @var ModelAbstract $model */ ?>
+      <?php foreach (($row[$key] ?? []) as $model) : ?>
+        <div class="d-flex align-items-center">
+          <?php if ($model && $model->getMeta()->hasProperty('image')) : ?>
+            <div class="bg-image rounded-4 shadow-5-strong me-3"
+                 role="button"
+                 data-admin-embed-modal
+                 data-admin-embed-modal-alt="<?php echo $model->image?->getAlt() ?? ''; ?>"
+                 data-admin-embed-modal-title="<?php echo $model->image?->getTitle() ?? ''; ?>"
+                 data-admin-embed-modal-src="<?php echo $model->image?->getSrc() ?? ''; ?>"
+                 data-admin-embed-modal-mime="<?php echo $model->image?->getMime() ?? ''; ?>"
+
+                 data-admin-async-image="<?php echo $model->image?->getThumbnail() ?? ''; ?>"
+                 data-mdb-ripple-init></div>
+          <?php endif; ?>
+          <span><?php echo $model?->{$col['field']}; ?></span>
+        </div>
+      <?php endforeach; ?>
+    </td>
+
+  <?php elseif ($type == 'image') : ?>
+    <?php $file = $row->$key; ?>
+
+    <td class="admin-table-row-image pe-0">
+      <div class="bg-image rounded-4 shadow-5-strong"
+           role="button"
+           data-admin-embed-modal
+           data-admin-embed-modal-alt="<?php echo $file?->getAlt(); ?>"
+           data-admin-embed-modal-title="<?php echo $file?->getTitle(); ?>"
+           data-admin-embed-modal-src="<?php echo $file?->getSrc(); ?>"
+           data-admin-embed-modal-mime="<?php echo $file?->getMime() ?? ''; ?>"
+
+           data-admin-async-image="<?php echo $file?->getThumbnail(); ?>"
+           data-mdb-ripple-init></div>
+    </td>
+
+  <?php elseif ($type == 'images') : ?>
+    <td class="admin-table-row-image">
+      <div class="d-flex gap-2">
+        <?php /** @var File $image */ ?>
+        <?php foreach ($row->$key as $index => $image) : ?>
+
+          <?php if ($index > ($col['max'] ?? 5)) {
+            break;
+          } ?>
+
+          <div class="bg-image rounded-4 shadow-5-strong"
+               role="button"
+               data-admin-embed-modal
+               data-admin-embed-modal-alt="<?php echo $image?->getAlt() ?? ''; ?>"
+               data-admin-embed-modal-title="<?php echo $image?->getTitle() ?? ''; ?>"
+               data-admin-embed-modal-src="<?php echo $image?->getSrc() ?? ''; ?>"
+               data-admin-embed-modal-mime="<?php echo $image?->getMime() ?? ''; ?>"
+
+               data-admin-async-image="<?php echo $image?->getThumbnail() ?? ''; ?>"
+               data-mdb-ripple-init></div>
+        <?php endforeach; ?>
+      </div>
+    </td>
+
+  <?php elseif ($type == 'custom') : ?>
+    <td class="admin-table-row-default <?php echo $size; ?>">
+      <?php echo $col['source']($row); ?>
+    </td>
+
+  <?php else : ?>
+    <td class="admin-table-row-default <?php echo $size; ?>">
+      <?php echo $row->$key; ?>
+    </td>
+
+  <?php endif; ?>
+<?php endforeach; ?>

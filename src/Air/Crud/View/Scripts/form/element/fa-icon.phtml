@@ -1,0 +1,32 @@
+<?php
+
+use Air\Core\Front;
+use Air\Form\Element\FaIcon;
+use Air\Crud\Nav\Nav;
+use Air\Crud\Locale;
+
+/** @var FaIcon $element */
+$element = $this->element;
+
+$value = $element->getValue();
+$jsonValue = null;
+if ($value) {
+  $jsonValue = json_encode($value->toArray());
+}
+$defaultValue = new \Air\Type\FaIcon(['icon' => 'icons']);
+?>
+<div data-admin-faicon>
+  <a class="btn btn-primary btn-lg btn-block text-start px-3 d-flex align-items-center"
+     data-admin-faicon-iframe="<?php echo Nav::getSettingsItem(Nav::SETTINGS_FAICON)['alias']; ?>"
+     data-admin-faicon-value
+     data-mdb-ripple-init>
+    <?php
+    echo $value
+      ? \faIcon($value, class: 'me-3 fs-5') . ' ' . $value->getIcon()
+      : \faIcon($defaultValue, class: 'me-3 fs-5') . ' ' . Locale::t('Choose an icon');
+    ?>
+  </a>
+  <textarea class="d-none"
+            name="<?php echo $element->getName(); ?>"
+            data-admin-faicon-input><?php echo $jsonValue; ?></textarea>
+</div>

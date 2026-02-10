@@ -1,0 +1,388 @@
+.menu {
+  width: 400px;
+}
+
+.logo {
+  width: 29px;
+  height: 29px;
+}
+
+.header {
+  background: linear-gradient(180deg, var(--mdb-body-bg) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+.header-menu {
+  background: linear-gradient(180deg, var(--mdb-tertiary-bg) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+.content {
+  min-height: calc(100vh - 130px);
+}
+
+.admin-select-searchable {
+  max-height: 400px;
+}
+
+.admin-select-image {
+  min-width: 25px;
+  min-height: 25px;
+  max-width: 25px;
+  max-height: 25px;
+}
+
+.admin-select-button .admin-select-image {
+  min-width: 15px;
+  min-height: 15px;
+  max-width: 15px;
+  max-height: 15px;
+}
+
+.admin-select-button .admin-select-button-title {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+.admin-table-row-image {
+  width: 10px;
+}
+
+.admin-table-row-images .bg-image {
+  width: auto;
+}
+
+.admin-table-row-model .bg-image,
+.admin-table-row-image .bg-image,
+.admin-table-row-images .bg-image {
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  max-height: 40px;
+}
+
+.admin-table-row-bool {
+  width: 10px;
+}
+
+.table tbody td {
+  --mdb-table-bg: --mdb-surface-bg;
+}
+
+.dropdown-menu {
+  --mdb-dropdown-bg: var(--mdb-body-bg);
+  max-height: 70vh;
+  overflow: auto;
+}
+
+ul.dropdown-menu > li > a > .fas {
+  width: 16px;
+}
+
+.admin-form-label {
+  width: 300px;
+  min-width: 300px;
+}
+
+.admin-form-image-preview {
+  width: 175px;
+  height: 175px;
+}
+
+.admin-embed-image {
+  height: calc(100vh - 120px);
+  max-height: calc(100vh - 120px);
+}
+
+.admin-embed-image p:empty {
+  display: none;
+}
+
+.modal-dialog.modal-xxl {
+  --mdb-modal-width: 90%;
+}
+
+.admin-form-multiple-model-activity,
+.admin-form-tab-has-errors {
+  width: 10px;
+  height: 10px;
+}
+
+.admin-form-multiple-model .bg-image {
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.admin-form-multiple-model .h6 {
+  max-width: 200px;
+  width: 200px;
+}
+
+.counter {
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.admin-form-doc-page .page {
+  box-shadow: 0 0 20px 3px rgb(0 0 0 / 31%);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-form-doc-page .page.transparent {
+  background-color: white;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAABhJREFUeJxjYGBgiMOCsYKhoHCQOYd8hQCajhJd1n1/yQAAAABJRU5ErkJggg==');
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+.admin-form-doc-page .page .item {
+  border-radius: 4px !important;
+  position: absolute;
+  overflow: hidden;
+  box-shadow: 0 0 20px 3px rgb(0 0 0 / 31%);
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.admin-form-doc-page .page .item .helper {
+  display: none;
+  position: absolute;
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  line-height: 12px;
+  font-size: 12px;
+  box-shadow: 0 0 20px 3px rgb(0 0 0 / 31%);
+}
+
+.admin-form-doc-page .page .item .helper.resizable {
+  bottom: 10px;
+  right: 10px;
+}
+
+.admin-form-doc-page .page .item .helper.draggable {
+  top: 10px;
+  left: 10px;
+}
+
+.admin-form-doc-page .page .item:hover .helper {
+  display: block;
+}
+
+.tox-tinymce {
+  border-radius: 0 !important;
+}
+
+.tox .tox-collection__item-label > * {
+  background-color: transparent !important;
+  font-size: 16px !important;
+}
+
+.color-preview {
+  width: 45px;
+  height: 45px;
+  border: 1px solid #2e2929;
+  border-radius: 4px;
+}
+
+.page-html-content {
+  padding: 10px;
+}
+
+.page-items-sorting-preview {
+  width: 20px;
+  height: 20px;
+}
+
+.page-items-sorting-item {
+  min-width: 230px;
+}
+
+.admin-nav-link .fas,
+.admin-nav-section .fas {
+  width: 16px;
+}
+
+.disable-overlay {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  z-index: 1;
+  cursor: not-allowed;
+}
+
+.admin-form-icons {
+  max-height: 400px;
+}
+
+.admin-form-icons .admin-form-icons-item {
+  width: 90px;
+}
+
+.admin-form-icons .admin-form-icons-item:hover {
+  color: var(--mdb-info);
+}
+
+.material-symbols-outlined,
+.admin-form-icons .admin-form-icons-item i {
+  font-variation-settings: 'FILL' 0,
+  'wght' 100,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.admin-form-icons .admin-form-icons-item span {
+  font-size: 12px;
+}
+
+.admin-form-faicon-container {
+  padding: 20px;
+  width: 100%;
+  max-height: 87vh;
+
+  .admin-form-faicon-filter {
+    height: 50px;
+  }
+
+  .admin-form-faicon-icons {
+    height: calc(86vh - 80px);
+    overflow: auto;
+    overflow-x: hidden;
+  }
+}
+
+.admin-tiny-preview {
+  pointer-events: none;
+
+  & > * {
+    margin-bottom: 20px;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.admin-table-row-default {
+  &.sm {
+    width: 10px;
+  }
+
+  &.md {
+    width: 30%;
+  }
+
+  &.lg {
+    width: 50%;
+  }
+
+  &.xl {
+    width: 100%;
+  }
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.admin-table-row-check {
+  padding-right: 0px !important;
+}
+
+input.form-control.color {
+  height: 45px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+[data-admin-manage-switch-language] [data-admin-select] {
+  width: 250px !important;
+}
+
+button.localized {
+  border: 0;
+  background: transparent;
+  color: var(--mdb-primary-text-emphasis);
+  position: absolute;
+  right: 6px;
+  top: 9px;
+}
+
+
+table.csv {
+  thead tr th {
+    background-color: var(--mdb-primary-border-subtle);
+  }
+}
+
+[data-zoom] {
+  height: 100%;
+  width: auto;
+}
+
+.admin-file-image-preview {
+  width: 140px;
+  height: 42px;
+}
+
+.admin-file-image-preview .bg-image {
+  width: 42px;
+  height: 42px;
+}
+
+.admin-file-image-preview-text-container {
+  padding: 2px;
+}
+
+[data-admin-form-tiny-preview] {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+[data-admin-form-tiny-preview] * {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.text-countable {
+  position: absolute;
+  bottom: 12px;
+  right: 10px;
+  background-color: var(--mdb-surface-inverted-bg);
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 12px;
+  padding: 4px;
+}
+
+.text-countable.overinputed {
+  background-color: var(--mdb-danger-bg-subtle);
+  color: var(--mdb-danger-text-emphasis);
+}
+
+[data-text-countable] input {
+  padding-right: 50px;
+}
+
+.json-viewer {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-height: 75dvh;
+}
+
+[data-admin-form-tiny-preview] ul,
+[data-admin-form-tiny-preview] ol {
+  padding-left: 20px !important;
+}

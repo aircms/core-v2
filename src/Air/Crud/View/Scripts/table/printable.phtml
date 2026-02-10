@@ -1,0 +1,44 @@
+<?php
+
+use Air\Crud\Controller\MultipleHelper\Accessor\Ui;
+use Air\Model\ModelAbstract;
+use Air\Model\Paginator;
+use Air\Crud\Locale;
+
+/** @var Paginator $paginator */
+$paginator = $this->paginator;
+
+/** @var array $header */
+$header = $this->header;
+$title = $this->title ?? '';
+
+echo Ui::header($title);
+
+echo Ui::content(function () use ($paginator, $title, $header) {
+  if ($paginator->count()) {
+    echo Ui::card(content: tag(
+      tagName: 'table',
+      class: 'table table-hover align-middle mb-0 rounded-4 overflow-hidden',
+      content: [
+        $this->partial('table/partial/head'),
+        tag('tbody', content: function () use ($paginator, $header) {
+
+          /** @var ModelAbstract $row */
+          foreach ($paginator->getItems() as $row) {
+            yield tag('tr', content: $this->partial('table/partial/row', ['row' => $row, 'header' => $header]));
+          }
+        }),
+      ]
+    ));
+  } else {
+    echo Ui::card(content: h6(class: 'm-0 p-0 text-muted', content: Locale::t('No records')));
+  }
+}); ?>
+
+<script>
+  $(document).ready(() => {
+    $('body').css('zoom', '0.7');
+    $('main').removeClass('vh-100').removeClass('vw-100');
+    print();
+  });
+</script>

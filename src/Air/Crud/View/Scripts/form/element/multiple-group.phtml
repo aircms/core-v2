@@ -1,0 +1,24 @@
+<?php
+
+use Air\Form\Element\MultipleGroup;
+
+/** @var MultipleGroup $element */
+$element = $this->element;
+?>
+
+<div class="d-flex flex-column gap-3" data-admin-form-element-group-multiple="<?php echo $element->getName(); ?>">
+  <?php echo $this->partial('form/element/multiple-group/toolbar'); ?>
+  <?php foreach ($element->getGroups() as $group) : ?>
+    <?php echo $this->partial('form/element/multiple-group/container', [
+      'group' => $group,
+      'element' => $element
+    ]); ?>
+  <?php endforeach; ?>
+</div>
+
+<template type="text/html" data-admin-form-element-group-multiple-template="<?php echo $element->getName(); ?>">
+  <?php echo $this->partial('form/element/multiple-group/container', [
+    'group' => $element->getGroup(),
+    'element' => $element
+  ]); ?>
+</template>

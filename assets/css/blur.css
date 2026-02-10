@@ -1,0 +1,39 @@
+.bg-blur-1 {
+  backdrop-filter: blur(2px);
+}
+
+.bg-blur-2 {
+  backdrop-filter: blur(4px);
+}
+
+.bg-blur-3 {
+  backdrop-filter: blur(6px);
+}
+
+.bg-blur-4 {
+  backdrop-filter: blur(8px);
+}
+
+.bg-blur-5 {
+  backdrop-filter: blur(10px);
+}
+
+.bg-blur-6 {
+  backdrop-filter: blur(12px);
+}
+
+.bg-blur-7 {
+  backdrop-filter: blur(14px);
+}
+
+.bg-blur-8 {
+  backdrop-filter: blur(16px);
+}
+
+.bg-blur-9 {
+  backdrop-filter: blur(18px);
+}
+
+.bg-blur-10 {
+  backdrop-filter: blur(20px);
+}

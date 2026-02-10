@@ -1,0 +1,16 @@
+<?php
+
+use Air\Form\Element\ElementAbstract;
+
+/** @var ElementAbstract $element */
+$element = $this->element;
+?>
+<div class="h6 m-0 w-100">
+  <?php echo $element->getLabel(); ?>
+  <?php if (!$element->isAllowNull()) : ?>
+    <span class="text-danger">*</span>
+  <?php endif; ?>
+  <?php if ($description = $element->getDescription()) : ?>
+    <div class="text-info small mt-2"><?php echo $description; ?></div>
+  <?php endif; ?>
+</div>

@@ -1,0 +1,137 @@
+<div class="p-3 position-sticky top-0 z-1 header">
+  <div class="card position-sticky w-100">
+    <div class="card-body p-3 d-flex justify-content-between align-items-center">
+      <h5 class="m-0 p-0"><?php echo \Air\Crud\Locale::t('System monitor'); ?></h5>
+      <a class="btn btn-primary px-3" onclick="nav.reload()">
+        <i class="fas fa-refresh me-1"></i>
+        <?php echo \Air\Crud\Locale::t('Refresh'); ?>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="p-3 pt-0 overflow-hidden overflow-y-auto">
+  <div class="row">
+    <div class="col-lg-6 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <h6 class="p-0 m-0 lead">
+            <i class="fas fa-save me-1"></i>
+            <?php echo \Air\Crud\Locale::t('Disk'); ?>
+          </h6>
+          <hr/>
+          <?php if ($this->disk) : ?>
+            <div class="d-flex align-content-center mb-3">
+              <div class="d-flex align-items-center me-4">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('Total'); ?></label>
+                <span class="badge badge-secondary"><?php echo $this->disk['total']; ?> Gb</span>
+              </div>
+              <div class="d-flex align-items-center me-4">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('Free'); ?></label>
+                <span class="badge badge-secondary"><?php echo $this->disk['free']; ?> Gb</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('Used'); ?></label>
+                <span
+                  class="badge badge-secondary"><?php echo $this->disk['total'] - $this->disk['free']; ?> Gb</span>
+              </div>
+            </div>
+            <div class="progress rounded-3" style="height: 20px;">
+              <div class="progress-bar" role="progressbar"
+                   style="width: <?php echo 100 - (100 * $this->disk['free']) / $this->disk['total']; ?>%;"></div>
+            </div>
+          <?php else: ?>
+            <div class="lead p-0 m-0"><?php echo \Air\Crud\Locale::t('Nothing to show'); ?></div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <h6 class="p-0 m-0 lead">
+            <i class="fas fa-memory me-1"></i>
+            <?php echo \Air\Crud\Locale::t('Memory'); ?>
+          </h6>
+          <hr/>
+          <?php if ($this->memory) : ?>
+            <div class="d-flex align-content-center mb-3">
+              <div class="d-flex align-items-center me-4">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('Total'); ?></label>
+                <span class="badge badge-secondary"><?php echo $this->memory['MemTotal']; ?> Gb</span>
+              </div>
+              <div class="d-flex align-items-center me-4">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('Free'); ?></label>
+                <span class="badge badge-secondary"><?php echo $this->memory['MemAvailable']; ?> Gb</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('Used'); ?></label>
+                <span class="badge badge-secondary">
+                  <?php echo $this->memory['MemTotal'] - $this->memory['MemAvailable']; ?> Gb
+                </span>
+              </div>
+            </div>
+            <div class="progress rounded-3" style="height: 20px;">
+              <div class="progress-bar" role="progressbar"
+                   style="width: <?php echo 100 - (100 * $this->memory['MemAvailable']) / $this->memory['MemTotal']; ?>%;"></div>
+            </div>
+          <?php else: ?>
+            <div class="lead p-0 m-0"><?php echo \Air\Crud\Locale::t('Nothing to show'); ?></div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <h6 class="p-0 m-0 lead">
+            <i class="fas fa-microchip me-1"></i>
+            <?php echo \Air\Crud\Locale::t('CPU'); ?>
+          </h6>
+          <hr/>
+          <?php if ($this->cpuLoadAverage) : ?>
+            <div class="d-flex align-content-center mb-3">
+              <div class="d-flex align-items-center me-4">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('CPU usage'); ?></label>
+                <span class="badge badge-secondary"><?php echo number_format($this->cpuLoadAverage, 2); ?>%</span>
+              </div>
+              <div class="d-flex align-items-center me-4">
+                <label class="me-2"><?php echo \Air\Crud\Locale::t('CPU cores'); ?></label>
+                <span class="badge badge-secondary"><?php echo $this->cpuCoreCount; ?></span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <label class="me-2"><?php echo \Air\Crud\Locale::t('CPU model'); ?></label>
+              <span class="badge badge-secondary"><?php echo $this->cpuName; ?></span>
+            </div>
+            <div class="progress rounded-3" style="height: 20px;">
+              <div class="progress-bar" role="progressbar"
+                   style="width: <?php echo number_format($this->cpuLoadAverage, 2); ?>%;"></div>
+            </div>
+          <?php else: ?>
+            <div class="lead p-0 m-0"><?php echo \Air\Crud\Locale::t('Nothing to show'); ?></div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body p-3">
+          <h6 class="p-0 m-0 lead">
+            <i class="fas fa-hdd me-1"></i>
+            <?php echo \Air\Crud\Locale::t('System'); ?>
+          </h6>
+          <hr/>
+          <div class="d-flex align-items-center me-4 mb-3">
+            <label class="me-2"><?php echo \Air\Crud\Locale::t('Uptime'); ?></label>
+            <span class="text-primary-emphasis"><?php echo $this->uptime; ?></span>
+          </div>
+          <div class="d-flex me-4">
+            <label class="me-2"><?php echo \Air\Crud\Locale::t('Version'); ?></label>
+            <span class="text-primary-emphasis"><?php echo $this->version; ?></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

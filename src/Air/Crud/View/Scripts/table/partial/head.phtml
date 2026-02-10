@@ -1,0 +1,32 @@
+<?php
+
+/** @var array $headerRow */
+$header = $this->header;
+?>
+
+
+<?php foreach ($header as $name => $headerRow) :
+  $title = str_replace(' ', '&nbsp;', $headerRow['title']);
+  $type = $headerRow['type'] ?? 'text';
+  $static = $headerRow['static'] ?? false;
+  $size = $headerRow['size'] ?? false;
+  ?>
+
+  <?php if ($type == 'bool') : ?>
+  <th class="admin-table-row-bool text-center">
+    <?php echo $title; ?>
+  </th>
+
+<?php elseif ($type == 'image' || $type == 'images') : ?>
+  <th class="admin-table-row-image pe-0">
+    <span><?php echo $title; ?></span>
+  </th>
+
+<?php else : ?>
+  <th class="<?php echo $size; ?>">
+    <?php echo $title; ?>
+  </th>
+
+<?php endif; ?>
+
+<?php endforeach; ?>

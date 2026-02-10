@@ -1,0 +1,26 @@
+<?php
+
+use Air\Type\RichContent;
+
+/** @var string $name */
+$name = $this->name;
+
+/** @var string $embed */
+$embed = $this->embed;
+?>
+
+<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo RichContent::TYPE_EMBED; ?>">
+
+<div data-admin-form-embed-container="<?php echo $name; ?>">
+  <input type="hidden" name="<?php echo $name; ?>[value]" value="<?php echo $embed; ?>">
+  <a class="btn btn-primary btn-block" data-admin-form-embed-add>
+    <i class="fas fa-plus me-1"></i>
+    <?php echo \Air\Crud\Locale::t('Type URL'); ?>
+  </a>
+  <div class="position-relative" data-admin-form-embed-value>
+    <div data-admin-form-embed
+         data-admin-embed-removable="false"
+         data-admin-embed-id="<?php echo $name; ?>"
+         data-admin-embed-src="<?php echo $embed; ?>"></div>
+  </div>
+</div>

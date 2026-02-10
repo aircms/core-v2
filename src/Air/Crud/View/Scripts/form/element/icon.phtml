@@ -1,0 +1,52 @@
+<?php
+
+use Air\Form\Element\Icon;
+
+/** @var Icon $element */
+$element = $this->element;
+?>
+<div class="btn-group w-100 rounded-4" data-admin-icon>
+  <button class="btn btn-primary btn-block text-start px-3 d-flex align-items-center"
+          data-mdb-dropdown-init
+          data-mdb-ripple-init
+          data-admin-icon-value>
+    <?php if ($value = $element->getValue()) : ?>
+      <i class="fs-6 material-symbols-outlined me-1"><?php echo $value; ?></i>
+      <span><?php echo ucfirst(strtolower(str_replace('_', ' ', $value))); ?></span>
+    <?php else: ?>
+      <?php echo \Air\Crud\Locale::t('Choose an icon'); ?>
+    <?php endif; ?>
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+    data-mdb-dropdown-init
+    data-mdb-ripple-init></button>
+
+  <input name="<?php echo $element->getName(); ?>"
+         value="<?php echo $element->getValue(); ?>"
+         type="hidden"
+         data-admin-icon-input/>
+
+  <ul class="dropdown-menu w-100" data-admin-icon-search-container>
+    <li class="p-3 pb-0">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="text" class="form-control" data-admin-icon-search-input/>
+        <label class="form-label"><?php echo \Air\Crud\Locale::t('Search'); ?></label>
+      </div>
+    </li>
+    <li class="admin-form-icons overflow-y-scroll overflow-x-hidden d-flex flex-wrap gap-3 p-3">
+      <?php foreach ($element->icons as $icon) : ?>
+        <?php $iconTitle = ucfirst(strtolower(str_replace('_', ' ', $icon))); ?>
+        <div data-admin-icon-id="<?php echo $icon; ?>"
+             data-admin-icon-title="<?php echo $iconTitle; ?>"
+             data-admin-icon-search="<?php echo $icon . $iconTitle; ?>"
+             class="admin-form-icons-item p-2 rounded-3 shadow-2 bg-body-tertiary text-center d-flex gap-2 flex-column"
+             role="button">
+          <i class="fs-1 material-symbols-outlined"><?php echo $icon; ?></i>
+          <span><?php echo $iconTitle; ?></span>
+        </div>
+      <?php endforeach; ?>
+    </li>
+  </ul>
+</div>

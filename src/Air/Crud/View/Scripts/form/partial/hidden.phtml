@@ -1,0 +1,24 @@
+<?php
+
+use Air\Form\Element\Hidden;
+use Air\Form\Form;
+
+/** @var Form $form */
+$form = $this->form;
+
+/** @var bool $isQuickManage */
+$isQuickManage = $this->isQuickManage;
+?>
+
+<input type="hidden" value="<?php echo $form->getReturnUrl(); ?>" name="return-url"/>
+<input type="hidden" value="" name="quick-save"/>
+
+<?php if ($isQuickManage) : ?>
+  <input type="hidden" value="1" name="isQuickManage"/>
+<?php endif; ?>
+
+<?php foreach ($form->getElements() as $element) : ?>
+  <?php if ($element instanceof Hidden) : ?>
+    <?php echo $element; ?>
+  <?php endif; ?>
+<?php endforeach; ?>

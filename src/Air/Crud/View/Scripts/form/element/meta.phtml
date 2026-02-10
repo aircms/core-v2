@@ -1,0 +1,103 @@
+<?php
+
+use Air\Core\Front;
+use Air\Form\Element\Meta;
+
+/** @var Meta $element */
+$element = $this->element;
+
+/** @var array $storageConfig */
+$storageConfig = Front::getInstance()->getConfig()['air']['storage'];
+
+$value = $element->getValue() ?? new \Air\Type\Meta();
+$name = $element->getName();
+?>
+<div data-admin-meta="<?php echo $name; ?>">
+  <div class="form-check form-switch">
+    <label for="<?php echo $name; ?>[useModelData]" class="ms-1">
+      <?php echo \Air\Crud\Locale::t('Use automatic data'); ?>
+    </label>
+    <input class="form-check-input"
+           type="checkbox"
+           role="switch"
+           id="<?php echo $name; ?>[useModelData]"
+           name="<?php echo $name; ?>[useModelData]"
+           data-admin-meta-use-model-data
+      <?php if ($value->isUseModelData()) : ?> checked="checked" <?php endif; ?>>
+  </div>
+
+  <div data-admin-meta-user-data class="position-relative pt-3">
+    <div data-admin-meta-user-data-overlay class="bg-blur-1 d-none disable-overlay"></div>
+
+    <div class="row g-3">
+      <div class="col-6">
+        <div class="form-outline bg-body-tertiary" data-mdb-input-init data-text-countable="60">
+          <input type="text"
+                 class="form-control form-control-lg"
+                 id="<?php echo $name; ?>[title]"
+                 name="<?php echo $name; ?>[title]"
+                 value="<?php echo htmlspecialchars($value->getTitle()); ?>"
+                 <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+          <label class="form-label" for="<?php echo $name; ?>"><?php echo \Air\Crud\Locale::t('Title'); ?></label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-outline bg-body-tertiary" data-mdb-input-init data-text-countable="60">
+          <input type="text"
+                 class="form-control form-control-lg"
+                 id="<?php echo $name; ?>[ogTitle]"
+                 name="<?php echo $name; ?>[ogTitle]"
+                 value="<?php echo htmlspecialchars($value->getOgTitle()); ?>"
+                 <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+          <label class="form-label" for="<?php echo $name; ?>"><?php echo \Air\Crud\Locale::t('OG title'); ?></label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-outline bg-body-tertiary" data-mdb-input-init data-text-countable="120">
+      <textarea class="form-control"
+                rows="2"
+                id="<?php echo $name; ?>[description]"
+                name="<?php echo $name; ?>[description]"><?php echo $value->getDescription(); ?></textarea>
+          <label class="form-label" for="<?php echo $name; ?>[description]">
+            <?php echo \Air\Crud\Locale::t('Description'); ?>
+          </label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-outline bg-body-tertiary" data-mdb-input-init data-text-countable="120">
+          <textarea class="form-control"
+                    rows="2"
+                    id="<?php echo $name; ?>[ogDescription]"
+                    name="<?php echo $name; ?>[ogDescription]"><?php echo $value->getOgDescription(); ?></textarea>
+          <label class="form-label" for="<?php echo $name; ?>[ogDescription]">
+            <?php echo \Air\Crud\Locale::t('OG description'); ?>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div data-admin-form-storage="<?php echo $name; ?>[ogImage]" class="mt-3">
+
+      <textarea class="d-none" name="<?php echo $name; ?>[ogImage]">
+        <?php if ($file = $value->getOgImage()) : ?>
+          <?php echo json_encode((array)$file, JSON_PRETTY_PRINT); ?>
+        <?php endif; ?>
+      </textarea>
+
+      <a class="btn btn-primary btn-block"
+         data-admin-form-storage-add
+         data-admin-form-storage-add-key="<?php echo $storageConfig['key']; ?>"
+         data-admin-form-storage-add-url="<?php echo $storageConfig['url']; ?>">
+        <i class="fas fa-plus"></i> <?php echo \Air\Crud\Locale::t('Select file'); ?>
+      </a>
+
+      <div class="d-flex flex-wrap" data-admin-form-storage-list>
+        <?php if ($file = $value->getOgImage()) : ?>
+          <div data-admin-file data-admin-file-storage-url="<?php echo $storageConfig['url']; ?>">
+            <?php echo json_encode((array)$file, JSON_PRETTY_PRINT); ?>
+          </div>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</div>

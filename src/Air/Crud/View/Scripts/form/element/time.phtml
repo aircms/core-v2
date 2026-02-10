@@ -1,0 +1,24 @@
+<?php
+
+use Air\Form\Element\Time;
+
+/** @var Time $element */
+$element = $this->element;
+?>
+<div class="form-outline" data-mdb-input-init>
+  <i class="fas fa-clock trailing"></i>
+  <input type="text"
+         id="<?php echo $element->getName(); ?>"
+         name="<?php echo $element->getName(); ?>"
+    <?php if ($element->getValue()) : ?>
+      value="<?php echo $element->getValue(); ?>"
+    <?php endif; ?>
+         class="form-control form-icon-trailing form-control-lg"
+         autocomplete="off"
+         readonly
+         role="button"
+         data-admin-timepicker>
+  <label class="form-label" for="<?php echo $element->getName(); ?>">
+    <?php echo $element->getLabel(); ?>
+  </label>
+</div>

@@ -1,0 +1,21 @@
+<?php
+
+use Air\Form\Element\Text;
+
+/** @var Text $element */
+$element = $this->element;
+?>
+<div class="form-outline bg-body-tertiary" data-mdb-input-init>
+  <input class="form-control form-control-lg <?php echo $element->getType(); ?>"
+         type="<?php echo $element->getType(); ?>"
+         id="<?php echo $element->getName(); ?>"
+         name="<?php echo $element->getName(); ?>"
+         value="<?php echo htmlspecialchars($element->getValue() ?? ''); ?>"
+         <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+
+  <?php if ($hint = ($element->getHint() ?? $element->getLabel())) : ?>
+    <label class="form-label" for="<?php echo $element->getName(); ?>">
+      <?php echo $hint; ?>
+    </label>
+  <?php endif; ?>
+</div>

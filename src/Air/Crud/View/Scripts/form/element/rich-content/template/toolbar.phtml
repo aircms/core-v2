@@ -1,0 +1,83 @@
+<?php
+
+use Air\Form\Element\RichContent;
+
+/** @var RichContent $element */
+$element = $this->element;
+
+$enabled = array_fill_keys($element->getEnabledElements(), true);
+?>
+
+<template type="text/html" data-admin-form-rich-content-template="toolbar">
+
+  <div data-admin-form-rich-content-toolbar>
+
+    <?php if (isset($enabled['file'])) : ?>
+      <a class="btn btn-primary px-3"
+         data-admin-form-rich-content-toolbar-add="file"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('Image'); ?>">
+        <i class="fas fa-image"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if (isset($enabled['files'])) : ?>
+      <a class="btn btn-primary px-3"
+         data-admin-form-rich-content-toolbar-add="files"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('Images'); ?>">
+        <i class="fas fa-images"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if (isset($enabled['quote'])) : ?>
+      <a class="btn btn-primary px-3"
+         data-admin-form-rich-content-toolbar-add="quote"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('Quote'); ?>">
+        <i class="fas fa-quote-right"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if (isset($enabled['text'])) : ?>
+      <a class="btn btn-primary px-3"
+         data-admin-form-rich-content-toolbar-add="text"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('Text'); ?>">
+        <i class="fas fa-font"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if (isset($enabled['html'])) : ?>
+      <a class="btn btn-primary px-3"
+         data-admin-form-rich-content-toolbar-add="html"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('HTML'); ?>">
+        <i class="fas fa-code"></i>
+      </a>
+    <?php endif; ?>
+
+    <?php if (isset($enabled['embed'])) : ?>
+      <a class="btn btn-primary px-3"
+         data-admin-form-rich-content-toolbar-add="embed"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('Embed'); ?>">
+        <i class="fas fa-anchor"></i>
+      </a>
+    <?php endif; ?>
+
+  </div>
+
+</template>

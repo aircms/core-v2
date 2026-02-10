@@ -1,0 +1,111 @@
+<?php
+
+use Air\Crud\Model\SmsQueue;
+
+/** @var SmsQueue $sms */
+$sms = $this->sms;
+
+/** @var string $entity */
+$entity = $this->entity;
+
+?>
+
+<div class="p-3 position-sticky top-0 z-i-1001 header">
+  <div class="card position-sticky w-100">
+    <div class="card-body p-3 d-flex justify-content-between align-items-center">
+      <h5 class="m-0 p-0">
+        <i class="fas fa-cogs me-1"></i>
+        General settings&nbsp;&nbsp;›&nbsp;&nbsp;Sms / Queue&nbsp;&nbsp;›&nbsp;&nbsp;Sms Item
+      </h5>
+      <div class="d-flex align-items-center">
+        <a class="btn btn-secondary ms-2 px-3" data-admin-from-manage-back data-mdb-ripple-init>
+          <i class="fa fa-arrow-left me-1"></i>
+          Go back
+        </a>
+        <a class="btn btn-primary ms-2 px-3" data-mdb-ripple-init data-send-sms>
+          <i class="fa fa-paper-plane me-1"></i>
+          Send
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="px-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <h6 class="mb-3">Destination</h6>
+          <div class="row g-2">
+            <div class="col-6 text-muted">To address:</div>
+            <div class="col-6"><?php echo $sms->toAddress; ?></div>
+          </div>
+        </div>
+        <div class="col-6">
+          <h6 class="mb-3">Status</h6>
+          <div class="row g-2">
+            <div class="col-6 text-muted">Status:</div>
+            <div class="col-6">
+              <?php if ($sms->status === SmsQueue::STATUS_SUCCESS) : ?>
+                <label class="badge badge-success">
+                  Success
+                </label>
+              <?php elseif ($sms->status === SmsQueue::STATUS_FAIL) : ?>
+                <label class="badge badge-danger">
+                  Fail
+                </label>
+              <?php elseif ($sms->status === SmsQueue::STATUS_NEW) : ?>
+                <label class="badge badge-warning">
+                  Waiting
+                </label>
+              <?php endif; ?>
+            </div>
+            <div class="col-6 text-muted">Planned:</div>
+            <div class="col-6"><?php echo date('Y-m-d H:i', $sms->when); ?></div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+
+        <?php echo $sms->when ? date('Y-m-d H:i', $sms->when) : null; ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="px-3 mt-3">
+  <div class="card">
+    <div class="card-body">
+      <?php echo $sms->message; ?>
+    </div>
+  </div>
+</div>
+
+<?php if ($sms->status != SmsQueue::STATUS_NEW) : ?>
+  <div class="px-3 mt-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="text-muted mb-3">Debug output:</h5>
+        <pre><?php echo htmlspecialchars($sms->debugOutput); ?></pre>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
+
+<script>
+  $('[data-send-sms]').on('click', function () {
+    modal.question('Send email now?').then(() => {
+      loader.show();
+      $.get('/<?php echo $entity; ?>/send?id=<?php echo $sms->id; ?>', r => {
+        loader.hide();
+        nav.reload();
+        if (r.success) {
+          modal.message('Success');
+        } else {
+          modal.message('Fail');
+        }
+      });
+    });
+  });
+</script>

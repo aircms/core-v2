@@ -1,0 +1,27 @@
+<template type="text/html" data-admin-form-doc-html-form-template>
+  <div data-admin-form-doc-html-form>
+    <textarea data-admin-form-doc-html-form-tiny></textarea>
+    <div class="modal-footer">
+      <div class="d-flex w-100">
+        <div class="flex-grow-1 me-3 d-flex">
+          <div class="form-outline bg-body-tertiary p-2 pb-1 px-0" data-mdb-input-init>
+            <input type="color"
+                   class="form-control form-control-lg h-100 rounded-4"
+                   id="background-color"
+                   value="#ffffff"
+                   required>
+            <label class="form-label" for="color"><?php echo \Air\Crud\Locale::t('Background color'); ?></label>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary btn-lg px-3" data-mdb-ripple-init data-admin-form-doc-html-form-apply>
+            <i class="fas fa-check me-1"></i> <?php echo \Air\Crud\Locale::t('Apply'); ?>
+          </button>
+          <button class="btn btn-secondary btn-lg px-3" data-mdb-ripple-init data-mdb-dismiss="modal">
+            <i class="fas fa-ban me-1"></i> <?php echo \Air\Crud\Locale::t('Cancel'); ?>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

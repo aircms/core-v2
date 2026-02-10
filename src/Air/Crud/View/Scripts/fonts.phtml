@@ -1,0 +1,43 @@
+<?php
+
+use Air\Crud\Model\Font;
+
+/** @var Font[] $fonts */
+$fonts = $this->fonts;
+?>
+
+<?php foreach ($fonts as $font) : ?>
+  @font-face {
+  font-family: '<?php echo $font->title; ?>';
+
+  <?php if ($font->eotIe9) : ?>
+    src: url('<?php echo $font->eotIe9->getSrc(); ?>');
+  <?php endif; ?>
+
+  src:
+  <?php if ($font->eotIe6Ie8) : ?>
+    url('<?php echo $font->eotIe6Ie8->getSrc(); ?>?#iefix') format('embedded-opentype'),
+  <?php endif; ?>
+
+  <?php if ($font->otf) : ?>
+    url('<?php echo $font->otf->getSrc(); ?>') format('opentype'),
+  <?php endif; ?>
+
+  <?php if ($font->woff2) : ?>
+    url('<?php echo $font->woff2->getSrc(); ?>') format('woff2'),
+  <?php endif; ?>
+
+  <?php if ($font->woff) : ?>
+    url('<?php echo $font->woff->getSrc(); ?>') format('woff'),
+  <?php endif; ?>
+
+  <?php if ($font->ttf) : ?>
+    url('<?php echo $font->ttf->getSrc(); ?>') format('truetype'),
+  <?php endif; ?>
+
+  <?php if ($font->svg) : ?>
+    url('<?php echo $font->svg->getSrc(); ?>#svgFontName') format('svg')
+  <?php endif; ?>
+
+  ;}
+<?php endforeach; ?>

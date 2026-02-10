@@ -1,0 +1,26 @@
+<?php
+
+use Air\Type\RichContent;
+
+/** @var \Air\Form\Element\RichContent $element */
+$element = $this->element;
+$name = $element->getName();
+?>
+
+<template type="text/html"
+          data-admin-form-rich-content-template-name="<?php echo $name; ?>"
+          data-admin-form-rich-content-template="<?php echo RichContent::TYPE_HTML; ?>">
+
+  <div class="card">
+    <div class="card-body p-3" role="button" data-admin-form-tiny>
+      <input type="hidden" name="<?php echo $name; ?>[{{name}}][type]" value="<?php echo RichContent::TYPE_HTML; ?>">
+      <textarea class="d-none" name="<?php echo $name; ?>[{{name}}][value]"></textarea>
+      <div data-admin-form-tiny-preview style="pointer-events: none;">
+        <div class="text-muted text-center small" style="user-select: none">
+          <?php echo \Air\Crud\Locale::t('Double click to edit text'); ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

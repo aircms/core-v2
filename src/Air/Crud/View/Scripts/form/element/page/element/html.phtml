@@ -1,0 +1,45 @@
+<?php
+
+use Air\Type\PageItem;
+
+/** @var PageItem $item */
+$item = $this->item;
+
+$id = uniqid();
+?>
+<div class="item"
+     style="<?php echo $item->asCss(); ?>"
+     data-admin-form-doc-page-item="<?php echo $id; ?>"
+     data-resizable
+     data-draggable>
+
+  <div class="page-html-content overflow-y-auto overflow-x-hidden position-absolute w-100 h-100"
+       data-admin-form-doc-page-item-edit-dblclick="<?php echo $id; ?>"
+       style="background-color: <?php echo $item->getValue()['color']; ?>"
+       data-admin-contextmenu="<?php echo $id; ?>"
+       data-admin-form-doc-page-item-html-content>
+    <?php echo $item->getValue()['html']; ?>
+  </div>
+
+  <ul class="dropdown-menu shadow-5-strong overflow-hidden" data-admin-contextmenu-target="<?php echo $id; ?>">
+    <li class="p-3 pb-0">
+      <?php echo \Air\Crud\Locale::t('Transparent'); ?>
+      <div class="range" data-mdb-range-init>
+        <input type="range"
+               class="form-range"
+               value="<?php echo $item->getTransparent(); ?>"
+               data-admin-form-doc-page-item-transparent="<?php echo $id; ?>"/>
+      </div>
+    </li>
+    <li>
+      <a class="dropdown-item" role="button" data-admin-form-doc-page-item-edit="<?php echo $id; ?>">
+        <i class="fas fa-edit me-1"></i> <?php echo \Air\Crud\Locale::t('Edit'); ?>
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" role="button" data-admin-form-doc-page-item-remove="<?php echo $id; ?>">
+        <i class="fas fa-ban me-1"></i> <?php echo \Air\Crud\Locale::t('Remove?'); ?>
+      </a>
+    </li>
+  </ul>
+</div>

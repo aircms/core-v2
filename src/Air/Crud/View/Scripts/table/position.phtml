@@ -1,0 +1,75 @@
+<?php
+
+use Air\Crud\Model\Language;
+use Air\Model\ModelAbstract;
+
+/** @var ModelAbstract[] $rows */
+$rows = $this->rows;
+
+/** @var string $positioning */
+$positioning = $this->positioning;
+
+/** @var array $params */
+$params = $this->params;
+
+/** @var string $controller */
+$controller = $this->controller;
+
+echo $this->partial('common/header');
+?>
+<div class="p-3 pt-0 overflow-hidden overflow-y-auto z-1 content">
+  <form
+    data-admin-position-form="<?php echo $this->uri(['controller' => $controller, 'action' => 'position'], $params); ?>">
+
+    <div class="card">
+      <div class="card-body p-3 pt-0">
+        <div class="d-flex flex-wrap" data-admin-form-positioning-sortable>
+
+          <?php foreach ($rows as $index => $item) : ?>
+            <div
+              class="border bmd-border-teal rounded-4 shadow-5-strong bg-body-tertiary mt-3 me-3 p-3 position-relative d-flex flex-row align-items-center admin-form-multiple-model"
+              role="button">
+
+              <input type="hidden" value="<?php echo $item->id; ?>" name="items[]">
+
+              <?php if ($item->getMeta()->hasProperty('enabled')) : ?>
+                <?php if ($item->enabled) : ?>
+                  <div
+                    class="admin-form-multiple-model-activity rounded-pill bg-success position-absolute top-0 start-0"></div>
+                <?php elseif (!$item->enabled) : ?>
+                  <div
+                    class="admin-form-multiple-model-activity rounded-pill bg-danger position-absolute top-0 start-0"></div>
+                <?php endif; ?>
+
+              <?php endif; ?>
+
+              <?php if ($item->getMeta()->hasProperty('image')) : ?>
+                <div class="bg-image rounded-4 me-3"
+                     data-admin-async-image="<?php echo $item->image->getSrc(); ?>"></div>
+              <?php endif; ?>
+
+              <div class="h6 m-0 max-lines-2">
+                <?php if ($item->getMeta()->hasProperty($positioning)) : ?>
+                  <?php echo $item->{$positioning}; ?>
+                <?php else: ?>
+                  <?php echo $positioning($item); ?>
+                <?php endif; ?>
+              </div>
+
+              <?php if ($item->getMeta()->hasProperty('language') && $item->language instanceof Language) : ?>
+                <div class="text-muted small rounded-2 px-1 bg-dark-subtle"><?php echo $item->language->key; ?></div>
+              <?php endif; ?>
+
+              <div data-admin-position-form-counter
+                   class="rounded-4 ms-3 h5 m-0 bg-primary-subtle counter d-flex align-items-center justify-content-center">
+                <?php echo $item->position + 1; ?>
+              </div>
+            </div>
+
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>

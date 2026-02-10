@@ -1,0 +1,54 @@
+<?php
+
+/** @var array $filter */
+$filter = $this->filter;
+
+$isAllowAll = $filter['allowAll'] ?? true;
+
+$title = \Air\Crud\Locale::t('All');
+
+if (!empty($filter['title'])) {
+  $title = $filter['title'] . ' (' . $title . ')';
+}
+
+?>
+<div class="btn-group w-100 rounded-4" data-admin-select-submit="true" data-admin-select>
+  <button class="btn btn-primary btn-block text-start px-3"
+          data-mdb-dropdown-init
+          data-mdb-ripple-init
+          data-admin-select-title>
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+    data-mdb-dropdown-init
+    data-mdb-ripple-init></button>
+
+  <input name="filter[<?php echo $filter['by']; ?>]"
+         value="<?php echo $filter['value']; ?>"
+         type="hidden"
+         data-admin-select-input/>
+
+  <ul class="dropdown-menu w-100">
+
+    <?php if ($isAllowAll) : ?>
+      <li>
+        <a class="dropdown-item" role="button" data-admin-select-option>
+          <?php echo $title; ?>
+        </a>
+      </li>
+    <?php endif; ?>
+
+    <?php foreach ($filter['options'] as $option) : ?>
+      <li>
+        <a class="dropdown-item"
+           role="button"
+           data-value="<?php echo $option['value']; ?>"
+           data-admin-select-option
+           <?php if ($filter['value'] === $option['value']) : ?>data-selected<?php endif; ?>>
+          <?php echo $option['title']; ?>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+</div>

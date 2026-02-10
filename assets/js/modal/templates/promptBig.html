@@ -1,0 +1,22 @@
+<form data-admin-modal-prompt-big>
+  <div class="modal-header {{styleHeader}}">
+    <h6 class="modal-title">{{title}}</h6>
+    <button class="btn-close" data-mdb-dismiss="modal" data-mdb-ripple-init></button>
+  </div>
+  <div class="modal-body bg-body">
+    <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+      <textarea class="form-control form-control-lg" required id="prompt" rows="5"></textarea>
+      <label class="form-label" for="{{label}}">{{label}}</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn {{styleButton}} px-3" data-mdb-ripple-init>
+      <i class="fas fa-check me-1"></i>
+      <span data-locale="Confirm"></span>
+    </button>
+    <button type="button" class="btn btn-secondary px-3" data-mdb-ripple-init data-mdb-dismiss="modal">
+      <i class="fas fa-ban me-1"></i>
+      <span data-locale="Cancel"></span>
+    </button>
+  </div>
+</form>

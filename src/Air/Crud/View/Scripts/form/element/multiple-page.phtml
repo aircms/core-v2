@@ -1,0 +1,23 @@
+<?php
+
+use Air\Form\Element\MultiplePage;
+
+/** @var MultiplePage $element */
+$element = $this->element;
+$name = $element->getName();
+?>
+<div data-admin-form-element-multiple-page="<?php echo $name; ?>">
+  <?php echo $this->partial('form/element/multiple-page/toolbar'); ?>
+  <?php foreach ($element->getPageElements() as $page) :
+    echo $this->partial('form/element/multiple-page/container', [
+      'page' => $page,
+      'element' => $element
+    ]);
+  endforeach; ?>
+  <template type="text/html" data-admin-form-element-multiple-page-template>
+    <?php echo $this->partial('form/element/multiple-page/container', [
+      'page' => $element->getPageElement(),
+      'element' => $element
+    ]); ?>
+  </template>
+</div>

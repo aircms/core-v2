@@ -1,0 +1,126 @@
+<?php
+
+use Air\Model\ModelAbstract;
+use Air\Model\Paginator;
+use Air\View\View;
+
+/** @var View $this */
+
+/** @var int $page */
+$page = $this->page;
+
+/** @var Paginator $paginator */
+$paginator = $this->paginator;
+
+/** @var array $controls */
+$controls = $this->controls;
+
+/** @var array $header */
+$header = $this->header;
+
+/** @var string $controller */
+$controller = $this->controller;
+
+/** @var bool $isSelectControl */
+$isSelectControl = $this->isSelectControl;
+
+/** @var bool $manageable */
+$manageable = $this->manageable;
+
+/** @var bool $selectable */
+$selectable = $this->selectable;
+
+/** @var bool $quickManage */
+$quickManage = $this->quickManage;
+
+/** @var bool $manageableMultiple */
+$manageableMultiple = $this->manageableMultiple;
+
+/** @var ?string $block */
+$block = $this->block;
+
+echo $this->partial('common/header');
+?>
+
+<div class="p-3 pt-0 overflow-hidden overflow-y-auto z-1 content">
+  <form data-admin-table-form>
+    <input type="hidden" value="<?php echo $page; ?>" name="page"/>
+
+    <?php echo $this->partial('table/partial/filter'); ?>
+
+    <?php echo when($block, card(containerClass: 'mb-3', color: TERTIARY, content: $block)); ?>
+
+    <?php if ($paginator->count()) : ?>
+
+      <div class="card">
+        <div class="card-body p-3">
+          <table class="table table-hover align-middle mb-0 rounded-4 overflow-hidden">
+            <thead>
+            <tr class="rounded-4 overflow-hidden">
+              <?php if ($manageableMultiple && !$isSelectControl) : ?>
+                <th class="admin-table-row-check">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" data-main-table-selectable="main"/>
+                  </div>
+                </th>
+              <?php endif; ?>
+              <?php echo $this->partial('table/partial/head'); ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php /** @var ModelAbstract $row */ ?>
+            <?php foreach ($paginator->getItems() as $row) : ?>
+
+              <tr
+                <?php if (count(($controls ?? []))) : ?>data-admin-contextmenu="<?php echo $row->id; ?>"<?php endif; ?>
+
+                <?php if ($isSelectControl) : ?>
+                  ondblclick="$('[data-admin-table-row-select=<?php echo $row->id; ?>]').click()"
+
+                <?php elseif (count(($controls ?? []))) : ?>
+
+                  ondblclick='$("[data-admin-contextmenu-target=\"<?php echo $row->id; ?>\"] > li:first a").click()'
+
+                <?php endif; ?>
+
+                <?php if ($manageableMultiple && !$isSelectControl) : ?>
+                  data-main-table-row-select="<?php echo $row->id; ?>"
+                <?php endif; ?>
+
+                role="button">
+                <?php if ($manageableMultiple && !$isSelectControl) : ?>
+                  <td class="admin-table-row-check">
+                    <div class="form-check">
+                      <input class="form-check-input pointer-events-none"
+                             type="checkbox"
+                             data-main-table-selectable="<?php echo $row->id; ?>"/>
+                    </div>
+                  </td>
+                <?php endif; ?>
+                <?php echo $this->partial('table/partial/row', ['header' => $header, 'row' => $row]); ?>
+              </tr>
+
+            <?php endforeach; ?>
+            </tbody>
+          </table>
+
+          <div class="bg-body p-4 py-3 rounded-bottom-3">
+            <?php echo $this->partial('table/partial/paginator', ['paginator' => $paginator]); ?>
+          </div>
+        </div>
+      </div>
+
+    <?php else: ?>
+
+      <div class="card">
+        <div class="card-body p-3">
+          <h6 class="m-0 p-0 text-muted"><?php echo \Air\Crud\Locale::t('No records'); ?></h6>
+        </div>
+      </div>
+
+    <?php endif; ?>
+
+  </form>
+</div>
+
+<?php echo $this->partial('table/partial/controls'); ?>

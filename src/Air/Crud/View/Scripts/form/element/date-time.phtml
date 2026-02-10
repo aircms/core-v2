@@ -1,0 +1,25 @@
+<?php
+
+use Air\Form\Element\DateTime;
+
+/** @var DateTime $element */
+$element = $this->element;
+?>
+<div class="form-outline" data-mdb-input-init>
+  <i class="fas fa-calendar trailing"></i>
+  <input type="text"
+         id="<?php echo $element->getName(); ?>"
+         name="<?php echo $element->getName(); ?>"
+    <?php if ($element->getValue()) : ?>
+      value="<?php echo date($element->getPhpFormat(), $element->getValue()); ?>"
+    <?php endif; ?>
+         class="form-control form-icon-trailing form-control-lg"
+         autocomplete="off"
+         readonly
+         role="button"
+         data-admin-datetimepicker-format="<?php echo $element->getFormat(); ?>"
+         data-admin-datetimepicker>
+  <label class="form-label" for="<?php echo $element->getName(); ?>">
+    <?php echo $element->getLabel(); ?>
+  </label>
+</div>

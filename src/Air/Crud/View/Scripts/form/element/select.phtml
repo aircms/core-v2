@@ -1,0 +1,63 @@
+<?php
+
+use Air\Form\Element\Select;
+
+/** @var Select $element */
+$element = $this->element;
+
+$options = $element->getOptions();
+$value = $element->getValue();
+
+$allowNull = $element->isAllowNull();
+
+if (!$allowNull && !$value && isset($options[0])) {
+  $value = $options[0]['value'];
+}
+?>
+<div class="btn-group w-100 rounded-4" data-admin-select>
+  <button class="btn btn-primary btn-block text-start px-3"
+          data-mdb-dropdown-init
+          data-mdb-ripple-init
+          data-admin-select-title>
+  </button>
+  <button
+    type="button"
+    class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split"
+    data-mdb-dropdown-init
+    data-mdb-ripple-init></button>
+
+  <input name="<?php echo $element->getName(); ?>"
+         value="<?php echo $value; ?>"
+         type="hidden"
+         data-admin-select-input/>
+
+  <ul class="dropdown-menu w-100">
+
+    <?php if ($allowNull) : ?>
+      <li>
+        <a class="dropdown-item" role="button" data-admin-select-option>
+          <?php echo \Air\Crud\Locale::t('All'); ?>
+        </a>
+      </li>
+    <?php endif; ?>
+
+    <li class="p-2">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="text" class="form-control" data-admin-select-search/>
+        <label class="form-label">Search</label>
+      </div>
+    </li>
+
+    <?php foreach ($options as $option) : ?>
+      <li>
+        <a class="dropdown-item"
+           role="button"
+           data-value="<?php echo $option['value']; ?>"
+           data-admin-select-option
+           <?php if ($value == $option['value']) : ?>data-selected<?php endif; ?>>
+          <?php echo $option['title']; ?>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+</div>

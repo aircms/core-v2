@@ -1,0 +1,33 @@
+<?php
+
+use Air\Core\Front;
+use Air\Type\RichContent;
+
+/** @var \Air\Form\Element\RichContent $element */
+$element = $this->element;
+$name = $element->getName();
+
+/** @var array $storageConfig */
+$storageConfig = Front::getInstance()->getConfig()['air']['storage'];
+?>
+
+<template type="text/html"
+        data-admin-form-rich-content-template-name="<?php echo $name; ?>"
+        data-admin-form-rich-content-template="<?php echo RichContent::TYPE_FILE; ?>">
+
+  <input type="hidden" name="<?php echo $name; ?>[{{name}}][type]" value="<?php echo RichContent::TYPE_FILE; ?>">
+
+  <div data-admin-form-storage="<?php echo $name; ?>[{{name}}]">
+
+    <textarea class="d-none" name="<?php echo $name; ?>[{{name}}][value]"></textarea>
+
+    <a class="btn btn-primary btn-block"
+       data-admin-form-storage-add
+       data-admin-form-storage-add-key="<?php echo $storageConfig['key']; ?>"
+       data-admin-form-storage-add-url="<?php echo $storageConfig['url']; ?>">
+      <i class="fas fa-plus"></i> <?php echo \Air\Crud\Locale::t('Select file'); ?>
+    </a>
+
+    <div class="d-flex flex-wrap" data-admin-form-storage-list></div>
+  </div>
+</template>

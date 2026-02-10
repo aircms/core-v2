@@ -1,0 +1,39 @@
+<?php
+
+use Air\Form\Element\KeyValue;
+
+/** @var KeyValue $element */
+$element = $this->element;
+
+$value = $element->getValue();
+$name = $element->getName();
+
+$keyPropertyName = $element->getKeyPropertyName();
+$valuePropertyName = $element->getValuePropertyName();
+?>
+<div class="row gx-3">
+  <div class="col flex-grow-1">
+    <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+      <input type="text"
+             name="<?php echo $name; ?>[<?php echo $keyPropertyName; ?>]"
+             value="<?php echo $value[$keyPropertyName] ?? ''; ?>"
+             id="<?php echo $name; ?>[<?php echo $keyPropertyName; ?>]"
+             class="form-control form-control-lg">
+      <label class="form-label" for="<?php echo $name; ?>[<?php echo $keyPropertyName; ?>]">
+        <?php echo $element->getKeyLabel(); ?>
+      </label>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+      <input type="text"
+             name="<?php echo $name; ?>[<?php echo $valuePropertyName; ?>]"
+             value="<?php echo $value[$valuePropertyName] ?? ''; ?>"
+             id="<?php echo $name; ?>[<?php echo $valuePropertyName; ?>]"
+             class="form-control form-control-lg">
+      <label class="form-label" for="<?php echo $name; ?>[<?php echo $valuePropertyName; ?>]">
+        <?php echo $element->getValueLabel(); ?>
+      </label>
+    </div>
+  </div>
+</div>

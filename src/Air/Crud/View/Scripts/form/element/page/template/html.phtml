@@ -1,0 +1,33 @@
+<template type="text/html" data-admin-form-doc-page-item-html-template>
+  <div class="item"
+       data-admin-form-doc-page-item="{{id}}"
+       data-resizable
+       data-draggable>
+
+    <div class="page-html-content overflow-y-auto overflow-x-hidden position-absolute w-100 h-100"
+         data-admin-form-doc-page-item-edit-dblclick="{{id}}"
+         style="background-color: {{color}}"
+         data-admin-contextmenu="{{id}}"
+         data-admin-form-doc-page-item-html-content>
+      {{html}}
+    </div>
+    <ul class="dropdown-menu shadow-5-strong overflow-hidden" data-admin-contextmenu-target="{{id}}">
+      <li class="p-3 pb-0">
+        <?php echo \Air\Crud\Locale::t('Transparent'); ?>
+        <div class="range" data-mdb-range-init>
+          <input type="range" class="form-range" value="100" data-admin-form-doc-page-item-transparent="{{id}}"/>
+        </div>
+      </li>
+      <li>
+        <a class="dropdown-item" role="button" data-admin-form-doc-page-item-edit="{{id}}">
+          <i class="fas fa-edit me-1"></i> <?php echo \Air\Crud\Locale::t('Edit'); ?>
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item" role="button" data-admin-form-doc-page-item-remove="{{id}}">
+          <i class="fas fa-ban me-1"></i> <?php echo \Air\Crud\Locale::t('Remove?'); ?>
+        </a>
+      </li>
+    </ul>
+  </div>
+</template>

@@ -1,0 +1,117 @@
+<?php
+
+/** @var EmailQueue $email */
+
+use Air\Crud\Model\EmailQueue;
+use Air\Crud\Locale;
+
+/** @var EmailQueue $email */
+$email = $this->email;
+
+/** @var string $entity */
+$entity = $this->entity;
+
+?>
+
+<div class="p-3 position-sticky top-0 z-i-1001 header">
+  <div class="card position-sticky w-100">
+    <div class="card-body p-3 d-flex justify-content-between align-items-center">
+      <h5 class="m-0 p-0">
+        <i class="fas fa-cogs me-1"></i>
+        <?php echo Locale::t('Email'); ?>
+      </h5>
+      <a class="btn btn-primary ms-2 px-3" data-mdb-ripple-init data-send-email>
+        <i class="fa fa-paper-plane me-1"></i>
+        <?php echo Locale::t('Send'); ?>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="px-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <h6 class="mb-3">
+            <?php echo Locale::t('Destination'); ?>
+          </h6>
+          <div class="row g-2">
+            <div class="col-6 text-muted"><?php echo Locale::t('To name'); ?>:</div>
+            <div class="col-6"><?php echo $email->toName; ?></div>
+            <div class="col-6 text-muted"><?php echo Locale::t('To address'); ?>:</div>
+            <div class="col-6"><?php echo $email->toAddress; ?></div>
+          </div>
+        </div>
+        <div class="col-6">
+          <h6 class="mb-3"><?php echo Locale::t('Status'); ?></h6>
+          <div class="row g-2">
+            <div class="col-6 text-muted"><?php echo Locale::t('Status'); ?>:</div>
+            <div class="col-6">
+              <?php if ($email->status === EmailQueue::STATUS_SUCCESS) : ?>
+                <label class="badge badge-success">
+                  <?php echo Locale::t('Success'); ?>
+                </label>
+              <?php elseif ($email->status === EmailQueue::STATUS_FAIL) : ?>
+                <label class="badge badge-danger">
+                  <?php echo Locale::t('Fail'); ?>
+                </label>
+              <?php elseif ($email->status === EmailQueue::STATUS_NEW) : ?>
+                <label class="badge badge-warning">
+                  <?php echo Locale::t('Waiting'); ?>
+                </label>
+              <?php endif; ?>
+            </div>
+            <div class="col-6 text-muted"><?php echo Locale::t('Planned'); ?>:</div>
+            <div class="col-6"><?php echo date('Y-m-d H:i', $email->when); ?></div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <?php echo $email->when ? date('Y-m-d H:i', $email->when) : null; ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="px-3 mt-3">
+  <div class="card">
+    <div class="card-body">
+      <?php echo $email->subject; ?>
+    </div>
+  </div>
+</div>
+
+<div class="px-3 mt-3">
+  <div class="card">
+    <div class="card-body">
+      <?php echo $email->body; ?>
+    </div>
+  </div>
+</div>
+
+<?php if ($email->status != EmailQueue::STATUS_NEW) : ?>
+  <div class="px-3 mt-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="text-muted mb-3"><?php echo Locale::t('Debug output'); ?>:</h5>
+        <pre><?php echo htmlspecialchars($email->debugOutput); ?></pre>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
+
+<script>
+  $('[data-send-email]').on('click', function () {
+    loader.show();
+    $.get('/<?php echo $entity; ?>/send?id=<?php echo $email->id; ?>', r => {
+      loader.hide();
+      nav.reload();
+      if (r.success) {
+        notify.message('<?php echo Locale::t('Success'); ?>');
+      } else {
+        notify.message('<?php echo Locale::t('Fail'); ?>');
+      }
+    });
+  });
+</script>

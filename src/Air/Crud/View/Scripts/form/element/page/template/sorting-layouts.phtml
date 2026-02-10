@@ -1,0 +1,29 @@
+<template type="text/html" data-admin-form-doc-sorting-layout-file-template>
+  <div class="card mb-2" role="button" data-admin-form-doc-sorting-layout-item="{{id}}" data-admin-contextmenu="{{id}}">
+    <div class="card-body p-2 d-flex align-items-center page-items-sorting-item">
+      <div class="bg-image page-items-sorting-preview rounded-2 me-2" style="background-image: url('{{src}}')"></div>
+      <div class="flex-grow-1 pe-3 small lh-1"><?php echo \Air\Crud\Locale::t('Image'); ?>: {{size}}</div>
+      <div class="small"><i class="fas fa-sort text-primary"></i></div>
+    </div>
+  </div>
+</template>
+
+<template type="text/html" data-admin-form-doc-sorting-layout-html-template>
+  <div class="card mb-2" role="button" data-admin-form-doc-sorting-layout-item="{{id}}" data-admin-contextmenu="{{id}}">
+    <div class="card-body p-2 d-flex align-items-center page-items-sorting-item">
+      <div class="bg-image page-items-sorting-preview rounded-2 me-2" style="background-color: {{color}}"></div>
+      <div class="flex-grow-1 pe-3 small lh-1"><?php echo \Air\Crud\Locale::t('Formatted text'); ?>: {{size}}</div>
+      <div class="small"><i class="fas fa-sort text-primary"></i></div>
+    </div>
+  </div>
+</template>
+
+<template type="text/html" data-admin-form-doc-sorting-layout-embed-template>
+  <div class="card mb-2" role="button" data-admin-form-doc-sorting-layout-item="{{id}}" data-admin-contextmenu="{{id}}">
+    <div class="card-body p-2 d-flex align-items-center page-items-sorting-item">
+      <div class="bg-image page-items-sorting-preview rounded-2 me-2 bg-primary"></div>
+      <div class="flex-grow-1 pe-3 small lh-1"><?php echo \Air\Crud\Locale::t('Embed'); ?>: {{size}}</div>
+      <div class="small"><i class="fas fa-sort text-primary"></i></div>
+    </div>
+  </div>
+</template>

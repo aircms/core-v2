@@ -1,0 +1,212 @@
+<?php
+
+use Air\Core\Front;
+use Air\Crud\Model\Language;
+use Air\Map;
+use Air\Model\Paginator;
+
+/** @var int $page */
+$page = $this->page;
+
+/** @var Paginator $paginator */
+$paginator = $this->paginator;
+
+/** @var array $controls */
+$controls = $this->controls;
+
+/** @var bool $isSelectControl */
+$isSelectControl = $this->isSelectControl;
+
+/** @var string $controller */
+$controller = $this->controller;
+
+if ((!$isSelectControl && !count($controls)) || !$paginator->count()) {
+  return;
+}
+
+$returnUrl = Front::getInstance()->getRequest()->getUri();
+
+$toJson = function ($row) {
+  $data = $row->getData();
+  if (isset($data['image'])) {
+    $data['image']['src'] = $row->image?->getSrc();
+  }
+  if (isset($data['language'])) {
+    $data['languageKey'] = $row->language->key;
+    $data['languageImage'] = $row->language->image->getSrc();
+  }
+  return htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8');
+};
+?>
+
+<?php foreach ($paginator->getItems() as $row) : ?>
+
+  <ul class="dropdown-menu shadow-5-strong" data-admin-contextmenu-target="<?php echo $row->id; ?>">
+
+    <?php if (!$isSelectControl) : ?>
+
+      <?php foreach (($controls ?? []) as $control) : ?>
+
+        <?php
+          if (($control['type'] ?? false) === 'custom') {
+            $control = $control['source']($row);
+          }
+        ?>
+
+        <?php if (($control['type'] ?? false) === 'custom') : ?>
+          <?php $customControl = $control['source']($row); ?>
+          <?php if ($customControl) : ?>
+            <?php if (is_array($customControl['url'])) : ?>
+              <?php $customControl['url'] = urldecode($this->uri($customControl['url'], ['id' => $row->id], true)); ?>
+            <?php endif; ?>
+            <li>
+              <a class="dropdown-item"
+                <?php if ($customControl['confirm'] ?? false) : ?>
+                  href="<?php echo $customControl['url']; ?>"
+                  data-confirm="<?php echo $customControl['confirm']; ?>"
+                  role="button"
+                <?php elseif ($customControl['modal'] ?? false) : ?>
+                  onclick="modal.<?php echo $customControl['modal']; ?>('<?php echo $customControl['url']; ?>', '<?php echo $customControl['title']; ?>')"
+                  role="button"
+                <?php endif; ?>>
+                <i class="fas fa-<?php echo $customControl['icon']; ?> me-1"></i> <?php echo $customControl['title']; ?>
+              </a>
+            </li>
+          <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (($control['type'] ?? false) === 'view') : ?>
+          <li>
+            <a class="dropdown-item"
+               role="button"
+               data-admin-table-view-model="<?php echo $controller; ?>"
+               data-admin-table-view-id="<?php echo $row->id; ?>">
+              <i class="fas fa-edit me-1"></i> <?php echo \Air\Crud\Locale::t('Quick manage'); ?>
+            </a>
+          </li>
+
+        <?php elseif (($control['type'] ?? false) === 'edit') : ?>
+          <li>
+            <a class="dropdown-item"
+               href="<?php echo $this->uri(['controller' => $controller, 'action' => 'manage'], ['id' => $row->id, 'returnUrl' => $returnUrl]); ?>">
+              <i class="fas fa-edit me-1"></i> <?php echo \Air\Crud\Locale::t('Manage'); ?>
+            </a>
+          </li>
+
+        <?php elseif (($control['type'] ?? false) === 'copy') : ?>
+          <li>
+            <a class="dropdown-item"
+               role="button"
+               data-admin-table-row-copy="<?php echo $this->uri(['controller' => $controller, 'action' => 'copy'], ['id' => $row->id]); ?>">
+              <i class="fas fa-copy me-1"></i> <?php echo \Air\Crud\Locale::t('Copy?'); ?>
+            </a>
+          </li>
+
+        <?php elseif (($control['type'] ?? false) === 'localizedCopy') : ?>
+          <li class="dropdown-divider"></li>
+          <?php foreach (Language::fetchAll() as $language) : ?>
+            <li>
+              <a class="dropdown-item"
+                 role="button"
+                 data-admin-table-row-copy-message="<?php echo \Air\Crud\Locale::t('Copy to: ') . $language->title; ?>"
+                 data-admin-table-row-copy="<?php echo $this->uri(
+                   ['controller' => $controller, 'action' => 'localizedCopy'],
+                   ['id' => $row->id, 'language' => $language->id]);
+                 ?>">
+                <i class="fas fa-copy me-1"></i> <?php echo \Air\Crud\Locale::t('Copy to: ') . $language->title; ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+          <li class="dropdown-divider"></li>
+
+        <?php elseif (($control['type'] ?? false) == 'enabled' && $row->getMeta()->hasProperty('enabled')) : ?>
+
+          <?php if ($row->enabled) : ?>
+            <li>
+              <a class="dropdown-item"
+                 role="button"
+                 data-confirm="<?php echo \Air\Crud\Locale::t('Disable record?'); ?>"
+                 data-admin-table-row-activity="<?php echo $this->uri(['controller' => $controller, 'action' => 'setEnabled'], ['enabled' => 0, 'id' => $row->id]); ?>">
+                <i class="fas fa-ban me-1"></i> <?php echo \Air\Crud\Locale::t('Disable?'); ?>
+              </a>
+            </li>
+
+          <?php else: ?>
+            <li>
+              <a class="dropdown-item"
+                 role="button"
+                 data-confirm="<?php echo \Air\Crud\Locale::t('Enable record?'); ?>"
+                 data-admin-table-row-activity="<?php echo $this->uri(['controller' => $controller, 'action' => 'setEnabled'], ['enabled' => 1, 'id' => $row->id]); ?>">
+                <i class="fas fa-check me-1"></i> <?php echo \Air\Crud\Locale::t('Enable?'); ?>
+              </a>
+            </li>
+          <?php endif; ?>
+
+        <?php elseif (($control['type'] ?? false) == 'separator') : ?>
+          <li class="dropdown-divider"></li>
+
+        <?php elseif (($control['type'] ?? false) == 'run-and-reload') : ?>
+          <?php if (is_array($control['url'])) : ?>
+            <?php $control['url'] = urldecode($this->uri($control['url'], ['id' => $row->id], true)); ?>
+          <?php endif; ?>
+
+          <li>
+            <a class="dropdown-item"
+               data-run-and-reload-url="<?php echo $control['url']; ?>"
+               role="button"
+              <?php if ($control['confirm'] ?? false) : ?>
+                data-run-and-reload-confirm="<?php echo $control['confirm']; ?>"
+              <?php endif; ?>
+            >
+              <?php if ($control['icon'] ?? false) : ?>
+                <i class="fa fa-<?php echo $control['icon'] ?? false; ?> me-1"></i>
+              <?php endif; ?>
+              <?php echo $control['title']; ?>
+            </a>
+          </li>
+
+        <?php elseif ($control['url'] ?? false) : ?>
+
+          <?php if (is_array($control['url'])) : ?>
+            <?php $control['url'] = urldecode($this->uri($control['url'], ['id' => $row->id], true)); ?>
+          <?php endif; ?>
+
+          <li>
+            <a class="dropdown-item"
+              <?php if ($control['confirm'] ?? false) : ?>
+                href="<?php echo $control['url']; ?>"
+                data-confirm="<?php echo $control['confirm']; ?>"
+                role="button"
+              <?php elseif ($control['modal'] ?? false) : ?>
+                onclick="modal.<?php echo $control['modal']; ?>('<?php echo $control['url']; ?>', '<?php echo $control['title']; ?>')"
+                role="button"
+              <?php else: ?>
+                href="<?php echo $control['url']; ?>"
+              <?php endif; ?>
+            >
+              <?php if ($control['icon'] ?? false) : ?>
+                <i class="fa fa-<?php echo $control['icon'] ?? false; ?> me-1"></i>
+              <?php endif; ?>
+              <?php echo $control['title']; ?>
+            </a>
+          </li>
+
+        <?php endif; ?>
+      <?php endforeach; ?>
+
+    <?php elseif ($isSelectControl) : ?>
+
+      <li>
+        <a class="dropdown-item"
+           role="button"
+           data-admin-table-row-select="<?php echo $row->id; ?>">
+          <div class="d-none" data-admin-table-row-object><?php echo $toJson($row); ?></div>
+          <i class="fas fa-check me-1"></i> <?php echo \Air\Crud\Locale::t('Select'); ?>
+        </a>
+      </li>
+
+    <?php endif; ?>
+
+  </ul>
+
+<?php endforeach; ?>

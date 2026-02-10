@@ -1,0 +1,62 @@
+<?php
+
+use Air\Form\Element\Model;
+
+/** @var Model $element */
+$element = $this->element;
+
+$value = $element->getValue()[0] ?? null;
+$name = $element->getName();
+
+$hasImage = $element->getModel()->getMeta()->hasProperty('image');
+$hasEnabled = $element->getModel()->getMeta()->hasProperty('enabled');
+?>
+
+<div class="btn-group w-100 rounded-4" data-admin-select>
+  <button class="btn btn-primary btn-block btn-lg text-start px-3 admin-select-button"
+          data-mdb-dropdown-init
+          data-mdb-ripple-init
+          data-admin-select-title>
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary btn-lg dropdown-toggle dropdown-toggle-split"
+    data-mdb-dropdown-init
+    data-mdb-ripple-init></button>
+
+  <input name="<?php echo $name; ?>" value="<?php echo $value?->id; ?>" type="hidden" data-admin-select-input/>
+
+  <ul class="dropdown-menu w-100 admin-select-searchable overflow-y-auto">
+    <li>
+      <a class="dropdown-item" role="button" data-admin-select-option><?php echo $element->getLabel(); ?></a>
+    </li>
+    <li class="p-2">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="text" class="form-control" data-admin-select-search/>
+        <label class="form-label"><?php echo \Air\Crud\Locale::t('Search'); ?></label>
+      </div>
+    </li>
+    <?php foreach ($element->getModel()::fetchAll() as $rec) : ?>
+      <li>
+        <a class="dropdown-item"
+           role="button"
+           data-value="<?php echo $rec->id; ?>"
+           data-admin-select-option
+           <?php if ($value?->id === $rec->id) : ?>data-selected<?php endif; ?>>
+          <div class="d-flex justify-content-between align-items-center">
+            <?php if ($hasImage) : ?>
+              <div class="admin-select-image bg-image rounded-4 me-3"
+                   style="background-image: url('<?php echo $rec->image?->getSrc(); ?>')"></div>
+            <?php endif; ?>
+            <span
+              class="flex-grow-1 text-wrap max-lines-2 pe-3 admin-select-button-title"><?php echo $rec->{$element->getField()}; ?></span>
+            <?php if ($hasEnabled) : ?>
+              <i
+                class="fas fa-<?php if ($rec->enabled) : ?>check text-success<?php else: ?>ban text-danger<?php endif; ?>"></i>
+            <?php endif; ?>
+          </div>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+</div>

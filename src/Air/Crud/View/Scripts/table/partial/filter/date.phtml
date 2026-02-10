@@ -1,0 +1,46 @@
+<?php
+
+/** @var array $filter */
+$filter = $this->filter;
+?>
+<div class="row gx-3">
+  <div class="col flex-grow-1">
+    <div class="form-outline" data-mdb-input-init>
+      <i class="fas fa-calendar trailing"></i>
+      <input type="text"
+             name="filter[<?php echo $filter['by']; ?>][from]"
+             value="<?php echo $filter['value']['from'] ?? ''; ?>"
+             id="filter[<?php echo $filter['by']; ?>][from]"
+             class="form-control form-icon-trailing"
+             autocomplete="off"
+             readonly
+             role="button"
+             data-admin-datepicker>
+      <label class="form-label" for="filter[<?php echo $filter['by']; ?>][from]">
+        <?php echo \Air\Crud\Locale::t('From'); ?>
+      </label>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-outline" data-mdb-input-init>
+      <i class="fas fa-calendar trailing"></i>
+      <input type="text"
+             name="filter[<?php echo $filter['by']; ?>][to]"
+             value="<?php echo $filter['value']['to'] ?? ''; ?>"
+             id="filter[<?php echo $filter['by']; ?>][to]"
+             class="form-control form-icon-trailing"
+             autocomplete="off"
+             readonly
+             role="button"
+             data-admin-datepicker>
+      <label class="form-label" for="filter[<?php echo $filter['by']; ?>][to]">
+        <?php echo \Air\Crud\Locale::t('Till'); ?>
+      </label>
+    </div>
+  </div>
+  <div class="col flex-grow-0">
+    <button type="submit" class="btn btn-primary px-3">
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+</div>

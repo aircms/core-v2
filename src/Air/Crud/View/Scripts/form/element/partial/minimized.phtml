@@ -1,0 +1,18 @@
+<?php
+
+use Air\Form\Element\ElementAbstract;
+use Air\Form\Element\Hidden;
+
+/** @var ElementAbstract $element */
+$element = $this->element;
+
+if ($element instanceof Hidden) {
+  echo $this->partial($element->getElementTemplate());
+  return;
+}
+?>
+<?php echo $this->partial($element->getElementTemplate()); ?>
+<?php if ($description = $element->getDescription()) : ?>
+  <div class="text-info small mt-1"><?php echo $description; ?></div>
+<?php endif; ?>
+<?php echo $this->partial($element->getErrorTemplate()); ?>

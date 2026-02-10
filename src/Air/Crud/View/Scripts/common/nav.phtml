@@ -1,0 +1,111 @@
+<?php
+
+use Air\Cookie;
+use Air\Core\Front;
+use Air\Crud\Locale;
+use Air\Crud\Nav\Nav;
+
+$config = Front::getInstance()->getConfig()['air'];
+
+/** @var string $title */
+$title = $config['admin']['title'] ?? null;
+
+/** @var array $menu */
+$menu = $config['admin']['menu'] ?? null;
+
+/** @var string $logo */
+$logo = $config['admin']['logo'] ?? null;
+
+/** @var string $theme */
+$theme = Cookie::get('theme') ?? 'dark';
+
+/** @var string $logout */
+$logout = $this->uri(['controller' => $config['admin']['auth']['route'], 'action' => 'logout']);
+?>
+
+<div class="d-flex flex-column h-100">
+  <div class="d-flex flex-column flex-grow-1">
+    <div class="p-3 position-sticky top-0 z-1 header">
+      <div class="card position-sticky w-100">
+        <div class="card-body p-3 d-flex justify-content-between align-items-center"
+             href="<?php echo $this->uri(['controller' => 'index']); ?>">
+          <div class="d-flex align-items-center">
+            <div class="logo bg-image bg-image-contain me-2" data-admin-async-image="<?php echo $logo; ?>"></div>
+            <h5 class="p-0 m-0"><?php echo $title; ?></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-3" data-admin-accordion>
+      <?php foreach ($menu as $subMenu) : ?>
+        <div class="mb-3">
+          <div class="rounded-4 p-3 d-flex justify-content-between transition-1 shadow-5-strong"
+               role="button"
+               data-admin-accordion-nav>
+            <h6 class="m-0 admin-nav-section">
+              <?php echo faIcon($subMenu['icon'], class: 'me-1'); ?>
+              <?php echo Locale::t($subMenu['title']); ?>
+            </h6>
+            <i class="fas fa-chevron-right transition-2" data-admin-accordion-nav-icon></i>
+          </div>
+          <div class="transition-2 rounded-bottom-3 overflow-hidden" data-admin-accordion-content>
+            <div>
+              <?php foreach ($subMenu['items'] as $subMenuItems) : ?>
+                <?php if ($subMenuItems === 'divider') : ?>
+                  <div class="dropdown-divider"></div>
+                  <?php continue; ?>
+                <?php endif; ?>
+                <a class="btn btn-link btn-block text-start btn-lg text-capitalize m-0 px-3 admin-nav-link"
+                   href="<?php echo $this->uri($subMenuItems['url'], [], true); ?>"
+                   data-mdb-ripple-init>
+                  <?php echo faIcon($subMenuItems['icon'], class: 'me-1'); ?>
+                  <?php echo Locale::t($subMenuItems['title']); ?>
+                </a>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-3">
+      <div class="btn-group w-100">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-mdb-dropdown-init data-mdb-ripple-init>
+          <i class="fas fa-power-off me-1"></i>
+          <?php echo Locale::t('Settings'); ?>
+        </button>
+        <ul class="dropdown-menu">
+          <li class="d-flex">
+            <a class="dropdown-item" role="button" onclick="theme.set('dark')">
+              <i class="fas fa-moon me-1 text-primary-emphasis"></i> <?php echo Locale::t('Night'); ?>
+            </a>
+            <a class="dropdown-item" role="button" onclick="theme.set('air')">
+              <i class="fas fa-sun me-1 text-warning-emphasis"></i> <?php echo Locale::t('Day'); ?>
+            </a>
+          </li>
+          <li class="dropdown-divider mt-0 pt-0"></li>
+          <?php foreach (Nav::getSettingItems() as $index => $group) : ?>
+            <?php foreach ($group as $item) : ?>
+              <li>
+                <a class="dropdown-item" href="<?php echo $this->uri(['controller' => $item['alias']]); ?>">
+                  <i class="fas fa-<?php echo $item['icon']; ?> me-1"></i> <?php echo Locale::t($item['title']); ?>
+                </a>
+              </li>
+            <?php endforeach; ?>
+            <li class="dropdown-divider"></li>
+          <?php endforeach; ?>
+          <li>
+            <a class="dropdown-item text-danger-emphasis"
+               href="<?php echo $logout; ?>"
+               data-force="true"
+               data-confirm="<?php echo Locale::t('Do you really want to sign out?'); ?>">
+              <i class="fa fa-sign-out me-1"></i> <?php echo Locale::t('Sign out'); ?>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

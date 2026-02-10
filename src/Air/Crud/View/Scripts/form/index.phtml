@@ -1,0 +1,40 @@
+<?php
+
+use Air\Form\Form;
+
+/** @var Form $form */
+$form = $this->form;
+
+$onlyOneTab = count($form->getGroupedElements()) === 1;
+
+echo $this->partial('common/header');
+?>
+
+<div class="p-3 pt-0 overflow-hidden overflow-y-auto z-1 content">
+
+  <?php echo $this->partial('form/partial/block'); ?>
+
+  <div class="card">
+    <div class="<?php if (!$onlyOneTab) : ?>card-body p-3<?php endif; ?>">
+      <form data-admin-from-manage>
+
+        <?php echo $this->partial('form/partial/hidden'); ?>
+
+        <div data-admin-tab>
+          <div
+            class="d-flex <?php if (!$onlyOneTab) : ?>justify-content-between<?php else: ?>justify-content-end p-3<?php endif; ?>">
+            <?php echo $this->partial('form/partial/tabs'); ?>
+            <?php echo $this->partial('form/partial/magic'); ?>
+          </div>
+          <div class="d-flex w-100" data-admin-tab-content>
+            <?php if ($form->getElementsMap()) : ?>
+              <?php echo $this->partial('form/partial/grouped-elements'); ?>
+            <?php else: ?>
+              <?php echo $this->partial('form/partial/plain-elements'); ?>
+            <?php endif; ?>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

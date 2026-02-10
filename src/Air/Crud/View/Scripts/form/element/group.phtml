@@ -1,0 +1,31 @@
+<?php
+
+use Air\Form\Element\Group;
+
+/** @var Group $group */
+$group = $this->element;
+?>
+
+<div class="card bg-body-tertiary">
+  <div class="card-body p-3 d-flex flex-column gap-4">
+    <?php if ($elementsMap = $group->getElementsMap()) : ?>
+      <div class="row g-3">
+        <?php foreach ($elementsMap as $map) : ?>
+          <?php foreach ($map as $mappedElement) : ?>
+            <?php foreach ($group->getElements() as $element) : ?>
+              <?php if ($element->getName() === $mappedElement) : ?>
+                <div class="col-<?php echo 12 / count($map); ?>">
+                  <?php echo $element; ?>
+                </div>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          <?php endforeach; ?>
+        <?php endforeach; ?>
+      </div>
+    <?php else: ?>
+      <?php foreach ($group->getElements() as $element) : ?>
+        <?php echo $element; ?>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </div>
+</div>

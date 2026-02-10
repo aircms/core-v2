@@ -1,0 +1,37 @@
+<?php
+
+use Air\Core\Front;
+use Air\Type\File;
+use Air\Type\RichContent;
+
+/** @var array $storageConfig */
+$storageConfig = Front::getInstance()->getConfig()['air']['storage'];
+
+/** @var string $name */
+$name = $this->name;
+
+/** @var File $file */
+$file = $this->file;
+?>
+
+<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo RichContent::TYPE_FILE; ?>">
+
+<div data-admin-form-storage="<?php echo $name; ?>">
+
+  <textarea class="d-none" name="<?php echo $name; ?>[value]">
+    <?php echo json_encode((array)$file, JSON_PRETTY_PRINT); ?>
+  </textarea>
+
+  <a class="btn btn-primary btn-block"
+     data-admin-form-storage-add
+     data-admin-form-storage-add-key="<?php echo $storageConfig['key']; ?>"
+     data-admin-form-storage-add-url="<?php echo $storageConfig['url']; ?>">
+    <i class="fas fa-plus"></i> <?php echo \Air\Crud\Locale::t('Select file'); ?>
+  </a>
+
+  <div class="d-flex flex-wrap" data-admin-form-storage-list>
+    <div data-admin-file data-admin-file-storage-url="<?php echo $storageConfig['url']; ?>">
+      <?php echo json_encode((array)$file, JSON_PRETTY_PRINT); ?>
+    </div>
+  </div>
+</div>

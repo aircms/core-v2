@@ -1,0 +1,23 @@
+<?php
+
+use Air\Form\Element\Tiny;
+
+/** @var Tiny $element */
+$element = $this->element;
+
+$value = $element->getValue();
+?>
+<div class="card">
+  <div class="card-body p-3" role="button" data-admin-form-tiny>
+    <textarea class="d-none" name="<?php echo $element->getName(); ?>"><?php echo $value; ?></textarea>
+    <div data-admin-form-tiny-preview style="pointer-events: none;">
+      <?php if (!strlen($value ?? '')) : ?>
+        <div class="text-muted text-center small" style="user-select: none">
+          <?php echo \Air\Crud\Locale::t('Double click to edit text'); ?>
+        </div>
+      <?php else: ?>
+        <?php echo $value; ?>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<?php
+
+use Air\Form\Element\Textarea;
+
+/** @var Textarea $element */
+$element = $this->element;
+?>
+
+<div class="form-outline bg-body-tertiary" data-mdb-input-init>
+  <textarea class="form-control"
+            rows="2"
+            id="<?php echo $element->getName(); ?>"
+            name="<?php echo $element->getName(); ?>"><?php echo $element->getValue(); ?></textarea>
+
+  <?php if ($hint = ($element->getHint() ?? $element->getLabel())) : ?>
+    <label class="form-label" for="<?php echo $element->getName(); ?>">
+      <?php echo $hint; ?>
+    </label>
+  <?php endif; ?>
+
+</div>

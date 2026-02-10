@@ -1,0 +1,51 @@
+<?php
+
+use Air\Core\Front;
+use Air\Form\Element\Storage;
+
+/** @var Storage $element */
+$element = $this->element;
+
+/** @var array $storageConfig */
+$storageConfig = Front::getInstance()->getConfig()['air']['storage'];
+?>
+
+<div data-admin-form-storage="<?php echo $element->getName(); ?>"
+     <?php if ($element->isMultiple()): ?>data-admin-form-storage-multiple="true"<?php endif; ?>>
+
+  <textarea class="d-none" style="font-size: 10px; width: 100%; height: 500px;" name="<?php echo $element->getName(); ?>">
+    <?php echo json_encode($element->getValue(), JSON_PRETTY_PRINT); ?>
+  </textarea>
+
+  <a class="btn btn-primary btn-block btn-lg"
+     data-admin-form-storage-add
+     data-admin-form-storage-add-key="<?php echo $storageConfig['key']; ?>"
+     data-admin-form-storage-add-url="<?php echo $storageConfig['url']; ?>"
+     <?php if ($element->isMultiple()) : ?>data-admin-form-storage-multiple="true"<?php endif; ?>>
+    <i class="fas fa-plus"></i>
+
+    <?php if ($element->isMultiple()) : ?>
+      <?php echo \Air\Crud\Locale::t('Add file'); ?>
+    <?php else: ?>
+      <?php echo \Air\Crud\Locale::t('Select file'); ?>
+    <?php endif; ?>
+  </a>
+
+  <div class="d-flex flex-wrap"
+       data-admin-form-storage-list
+       <?php if ($element->isMultiple()) : ?>data-admin-form-storage-sortable<?php endif; ?>>
+    <?php if ($value = $element->getValue()) : ?>
+      <?php if ($element->isMultiple()) : ?>
+        <?php foreach ($value as $index => $file) : ?>
+          <div data-admin-file data-admin-file-storage-url="<?php echo $storageConfig['url']; ?>">
+            <?php echo json_encode((array)$file, JSON_PRETTY_PRINT); ?>
+          </div>
+        <?php endforeach; ?>
+      <?php else : ?>
+        <div data-admin-file data-admin-file-storage-url="<?php echo $storageConfig['url']; ?>">
+          <?php echo json_encode((array)$element->getValue(), JSON_PRETTY_PRINT); ?>
+        </div>
+      <?php endif; ?>
+    <?php endif; ?>
+  </div>
+</div>

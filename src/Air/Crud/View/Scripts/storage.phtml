@@ -1,0 +1,18 @@
+<?php
+
+/** @var array $storageConfig */
+$storageConfig = $this->storageConfig;
+
+/** @var string $theme */
+$theme = $this->theme;
+
+/** @var string $lang */
+$lang = $this->lang;
+?>
+<div class="w-100 h-100 overflow-hidden">
+  <iframe class="border-0 bg-transparent"
+          src="<?php echo $storageConfig['url']; ?>?key=<?php echo $storageConfig['key']; ?>&theme=<?php echo $theme; ?>&lang=<?php echo $lang; ?>"
+          style="height: 0; width: 0;"
+          allow="clipboard-read; clipboard-write;"
+          data-storage-frame></iframe>
+</div>

@@ -1,0 +1,18 @@
+<?php
+
+/** @var array $filter */
+$filter = $this->filter;
+?>
+<div class="input-group">
+  <div class="form-outline" data-mdb-input-init>
+    <input type="search"
+           id="filter[search]"
+           class="form-control"
+           name="filter[search]"
+           value="<?php echo $filter['value']; ?>"/>
+    <label class="form-label" for="filter[search]"><?php echo \Air\Crud\Locale::t('Search'); ?></label>
+  </div>
+  <button type="button" class="btn btn-primary px-3" data-search-button data-mdb-ripple-init>
+    <i class="fas fa-search"></i>
+  </button>
+</div>

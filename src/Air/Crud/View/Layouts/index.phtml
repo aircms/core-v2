@@ -1,0 +1,186 @@
+<?php
+
+use Air\Cookie;
+use Air\Core\Front;
+use Air\Crud\Model\Deepl;
+use Air\Crud\Model\DeepSeek;
+use Air\Crud\Model\GoogleTranslate;
+use Air\Crud\Nav\Nav;
+use Air\View\View;
+use Air\Crud\Locale;
+
+/** @var View $this */
+
+/** @var string $theme */
+$theme = Cookie::get('theme') ?? 'dark';
+
+/** @var string $tiny */
+$tiny = Front::getInstance()->getConfig()['air']['admin']['tiny'];
+
+/** @var string $title */
+$title = Front::getInstance()->getConfig()['air']['admin']['title'];
+
+/** @var string $favicon */
+$favicon = Front::getInstance()->getConfig()['air']['admin']['favicon'];
+
+$fonts = Nav::getSettingsItem(Nav::SETTINGS_FONTS);
+
+if (GoogleTranslate::singleOne()?->enabled) {
+  $googleTranslate = Nav::getSettingsItem(Nav::SETTINGS_GOOGLE_TRANSLATE);
+}
+
+if (Deepl::singleOne()?->enabled) {
+  $deepl = Nav::getSettingsItem(Nav::SETTINGS_DEEPL);
+}
+
+if (DeepSeek::singleOne()?->enabled) {
+  $deepSeek = Nav::getSettingsItem(Nav::SETTINGS_DEEPSEEK);
+}
+
+/** @var bool $isSelectControl */
+$isSelectControl = $this->isSelectControl ?? false;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <?php
+
+  echo tag('link', attr: ['rel' => 'icon', 'href' => $favicon]);
+  echo tag('meta', attr: ['charset' => 'UTF-8']);
+  echo tag('meta', attr: ['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0']);
+  echo tag('title', content: $title);
+
+  echo $this->base();
+  ?>
+
+  <script>
+    const locale = (key) => {
+      const value = (<?php echo json_encode(Locale::phrases(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); ?>)[key];
+      if (!value) {
+        const ph = JSON.parse(localStorage.getItem('phrases')) || {};
+        ph[key] = key;
+        localStorage.setItem('phrases', JSON.stringify(ph));
+      }
+      return value || key;
+    };
+
+    window.fontsUrl = '<?php echo $fonts['alias'] ?? null; ?>';
+    window.deepl = '<?php echo $deepl['alias'] ?? null; ?>';
+    window.googleTranslate = '<?php echo $googleTranslate['alias'] ?? null; ?>';
+    window.deepSeek = '<?php echo $deepSeek['alias'] ?? null; ?>';
+  </script>
+
+  <?php echo $this->asset([
+    'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
+    'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
+    'https://cdn.tiny.cloud/1/' . $tiny . '/tinymce/6/tinymce.min.js',
+
+    'vendor/fa/css/all.css',
+    'vendor/fa/css/sharp-duotone-solid.css',
+    'vendor/fa/css/sharp-light.css',
+    'vendor/fa/css/sharp-regular.css',
+    'vendor/fa/css/sharp-solid.css',
+    'vendor/fa/css/sharp-thin.css',
+
+    'vendor/mdb/light.css',
+    'vendor/mdb/mdb.js',
+
+    'vendor/jq.js',
+    'vendor/sortable.js',
+
+    'vendor/dt-picker/dt.css',
+    'vendor/dt-picker/dt.js',
+
+    'vendor/jq-ui/jquery-ui.css',
+    'vendor/jq-ui/jquery-ui.js',
+
+    'vendor/wheelzoom.js',
+
+    'vendor/json-viewer/json-viewer.js',
+    'vendor/json-viewer/json-viewer.css',
+
+    'css/blur.css',
+    'css/max-lines.css',
+    'css/scrollbar.css',
+    'css/transition.css',
+    'css/rotate.css',
+    'css/bg-image.css',
+    'css/z-index.css',
+    'css/ratio.css',
+    'css/font.css',
+
+    'css/admin.css',
+
+    'js/mdb.js',
+    'js/clipboard.js',
+    'js/modal/modal.js',
+    'js/wait.js',
+    'js/cookie.js',
+    'js/theme.js',
+    'js/loader.js',
+    'js/notify.js',
+    'js/nav.js',
+    'js/context-menu.js',
+    'js/tab.js',
+    'js/select.js',
+    'js/accordion.js',
+    'js/tiny.js',
+    'js/embed/embed.js',
+    'js/file/file.js',
+    'js/datepicker.js',
+    'js/bg-image.js',
+    'js/crud-locale.js',
+    'js/json-viewer.js',
+
+    'js/side/side.js',
+
+    'js/crud-table.js',
+    'js/crud-form.js',
+    'js/crud-positioning.js',
+
+    'js/crud-elements/multiple-key-value.js',
+    'js/crud-elements/multiple-text.js',
+    'js/crud-elements/multiple-model.js',
+    'js/crud-elements/single-model.js',
+    'js/crud-elements/rich-content.js',
+    'js/crud-elements/storage.js',
+    'js/crud-elements/embed.js',
+    'js/crud-elements/page.js',
+    'js/crud-elements/group-multiple.js',
+    'js/crud-elements/page-multiple.js',
+    'js/crud-elements/meta.js',
+    'js/crud-elements/icon.js',
+    'js/crud-elements/fa-icon.js',
+    'js/crud-elements/url.js',
+    'js/crud-elements/magic.js',
+    'js/crud-elements/checkbox.js',
+
+    'js/text-countable.js',
+
+    'js/deepl.js',
+    'js/google-translate.js',
+    'js/text-assistance.js',
+    'js/deep-seek.js',
+
+    'js/csv.js',
+    'js/general.js',
+
+  ]);
+  if ($fonts) {
+    $this->asset('/' . $fonts['alias'] . '/css');
+  }
+  ?>
+</head>
+<body data-mdb-theme="<?php echo $theme; ?>" class="overflow-hidden">
+<main class="vh-100 vw-100 d-flex">
+  <?php if (!$isSelectControl) : ?>
+    <div class="bg-body-tertiary overflow-hidden overflow-y-auto menu">
+      <?php echo $this->partial('common/nav'); ?>
+    </div>
+  <?php endif; ?>
+  <div class="w-100 overflow-hidden overflow-y-auto" data-admin-layout-main>
+    <?php echo $this->getContent(); ?>
+  </div>
+</main>
+</body>
+</html>

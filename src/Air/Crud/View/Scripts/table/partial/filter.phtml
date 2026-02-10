@@ -1,0 +1,57 @@
+<?php
+
+$filter = $this->filter ?? [];
+
+if (!count($filter)) {
+  return;
+}
+
+$visibleFilterCount = 0;
+foreach ($filter as $filterItem) {
+  if ($filterItem['type'] != 'hidden') {
+    $visibleFilterCount++;
+  }
+}
+
+$needMargin = false;
+
+if ($visibleFilterCount > 4) {
+  $needMargin = true;
+  $visibleFilterCount = 3;
+}
+
+?>
+<div class="card mb-3">
+  <div class="card-body p-3 <?php if ($needMargin) : ?>pb-0<?php endif; ?>">
+    <div class="row gx-3">
+      <?php foreach ($this->filter as $filterItem) : ?>
+        <div
+          class="col-xs-12 col-sm-<?php echo 12 / $visibleFilterCount; ?> <?php if ($needMargin) : ?>mb-3<?php endif; ?>">
+
+          <?php if ($filterItem['type'] == 'hidden') : ?>
+            <?php echo $this->partial('table/partial/filter/hidden', ['filter' => $filterItem]); ?>
+
+          <?php elseif ($filterItem['type'] == 'search') : ?>
+            <?php echo $this->partial('table/partial/filter/search', ['filter' => $filterItem]); ?>
+
+          <?php elseif ($filterItem['type'] == 'bool') : ?>
+            <?php echo $this->partial('table/partial/filter/bool', ['filter' => $filterItem]); ?>
+
+          <?php elseif ($filterItem['type'] == 'select') : ?>
+            <?php echo $this->partial('table/partial/filter/select', ['filter' => $filterItem]); ?>
+
+          <?php elseif ($filterItem['type'] == 'dateTime') : ?>
+            <?php echo $this->partial('table/partial/filter/dateTime', ['filter' => $filterItem]); ?>
+
+          <?php elseif ($filterItem['type'] == 'date') : ?>
+            <?php echo $this->partial('table/partial/filter/date', ['filter' => $filterItem]); ?>
+
+          <?php elseif ($filterItem['type'] == 'model') : ?>
+            <?php echo $this->partial('table/partial/filter/model', ['filter' => $filterItem]); ?>
+
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</div>

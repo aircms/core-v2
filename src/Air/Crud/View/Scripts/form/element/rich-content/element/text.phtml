@@ -1,0 +1,20 @@
+<?php
+
+use Air\Type\RichContent;
+
+/** @var string $name */
+$name = $this->name;
+
+/** @var string $name */
+$text = $this->text;
+?>
+
+<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo RichContent::TYPE_TEXT; ?>"/>
+
+<div class="form-outline bg-body-tertiary" data-mdb-input-init>
+  <textarea class="form-control"
+            rows="2"
+            id="<?php echo $name; ?>[value]"
+            name="<?php echo $name; ?>[value]"><?php echo $text; ?></textarea>
+  <label class="form-label" for="<?php echo $name; ?>"><?php echo \Air\Crud\Locale::t('Text'); ?></label>
+</div>

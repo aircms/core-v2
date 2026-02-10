@@ -1,0 +1,166 @@
+<?php
+
+use Air\Type\Page;
+
+/** @var \Air\Form\Element\Page $element */
+$element = $this->element;
+$value = $element->getValue();
+
+$isSetBackgroundImageVisible = !$value?->getBackgroundImage();
+$isClearBackgroundImageVisible = !$isSetBackgroundImageVisible;
+
+$isSetBackgroundColorVisible = !$value?->getBackgroundColor();
+$isClearBackgroundColorVisible = !$isSetBackgroundColorVisible;
+
+$width = $value?->getWidth() ?? Page::WIDTH;
+$height = $value?->getHeight() ?? Page::HEIGHT;
+$gutter = $value?->getGutter() ?? Page::GUTTER;
+?>
+<div data-admin-form-doc-toolbar>
+  <div class="d-flex">
+    <div class="dropdown me-1">
+      <button
+        class="btn btn-primary px-3"
+        type="button"
+        data-mdb-dropdown-init
+        data-mdb-ripple-init
+        aria-expanded="false"
+        data-admin-form-doc-toolbar-size-label>
+        Size: <?php echo $width; ?> x <?php echo $height; ?>
+      </button>
+
+      <ul class="dropdown-menu">
+        <li class="pb-2 p-3" style="width: 220px">
+          <div class="d-flex">
+            <div class="form-outline bg-body-tertiary me-3" data-mdb-input-init>
+              <input type="text"
+                     class="form-control form-control-lg"
+                     value="<?php echo $width; ?>"
+                     data-admin-form-doc-toolbar-size="width">
+              <label class="form-label" for="width"><?php echo \Air\Crud\Locale::t('Width (px)'); ?></label>
+            </div>
+            <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+              <input type="text" class="form-control form-control-lg"
+                     value="<?php echo $height; ?>"
+                     data-admin-form-doc-toolbar-size="height">
+              <label class="form-label" for="width"><?php echo \Air\Crud\Locale::t('Height (px)'); ?></label>
+            </div>
+          </div>
+        </li>
+        <li class="dropdown-divider mb-0"></li>
+        <?php foreach ($element->getSizes() as $size) : ?>
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-between"
+               data-admin-form-doc-toolbar-set-size="<?php echo $size['size']['width'] . 'x' . $size['size']['height']; ?>"
+               role="button">
+              <?php echo $size['title']; ?> <span
+                class="badge badge-primary"><?php echo $size['size']['width'] . ' x ' . $size['size']['height']; ?></span>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+
+    <div class="dropdown me-1">
+      <button
+        class="btn btn-primary px-3"
+        type="button"
+        data-mdb-dropdown-init
+        data-mdb-ripple-init
+        aria-expanded="false">
+        <?php echo \Air\Crud\Locale::t('Gutter'); ?>: <span data-admin-form-doc-toolbar-gutter-label><?php echo $gutter; ?></span> <?php echo \Air\Crud\Locale::t('px'); ?>
+      </button>
+
+      <ul class="dropdown-menu">
+        <li class="pb-2 p-3">
+          <div class="d-flex">
+            <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+              <input type="text" class="form-control form-control-lg"
+                     value="<?php echo $gutter; ?>"
+                     data-admin-form-doc-toolbar-gutter>
+              <label class="form-label" for="width"><?php echo \Air\Crud\Locale::t('Gutter (px)'); ?></label>
+            </div>
+          </div>
+        </li>
+        <li class="dropdown-divider mb-0"></li>
+        <?php foreach ($element->getGutters() as $gutter) : ?>
+          <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-between"
+               data-admin-form-doc-toolbar-set-gutter="<?php echo $gutter; ?>"
+               role="button">
+              <?php echo $gutter; ?> <?php echo \Air\Crud\Locale::t('px'); ?>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+
+    <a class="btn btn-primary px-3 me-1"
+       data-admin-form-doc-toolbar-set-background-image
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Set background image'); ?>"
+       <?php if (!$isSetBackgroundImageVisible) : ?>style="display: none"<?php endif; ?>>
+      <i class="fas fa-image"></i>
+    </a>
+
+    <a class="btn btn-danger px-3 me-1"
+       data-admin-form-doc-toolbar-clear-background-image
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Remove background image?'); ?>"
+       <?php if (!$isClearBackgroundImageVisible) : ?>style="display: none"<?php endif; ?>>
+      <i class="fas fa-image"></i>
+    </a>
+
+    <a class="btn btn-primary px-3 me-1"
+       data-admin-form-doc-toolbar-set-background-color
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Set background color'); ?>"
+       <?php if (!$isSetBackgroundColorVisible) : ?>style="display: none"<?php endif; ?>>
+      <i class="fas fa-palette"></i>
+    </a>
+
+    <a class="btn btn-danger px-3 me-1"
+       data-admin-form-doc-toolbar-clear-background-color
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Remove background color?'); ?>"
+       <?php if (!$isClearBackgroundColorVisible) : ?>style="display: none"<?php endif; ?>>
+      <i class="fas fa-palette"></i>
+    </a>
+
+    <a class="btn btn-primary px-3 me-1"
+       data-admin-form-doc-toolbar-add-file
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Add file'); ?>">
+      <i class="fas fa-file"></i>
+    </a>
+    <a class="btn btn-primary px-3 me-1"
+       data-admin-form-doc-toolbar-add-html
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Add formatted text'); ?>">
+      <i class="fas fa-code"></i>
+    </a>
+    <a class="btn btn-primary px-3"
+       data-admin-form-doc-toolbar-add-embed
+       data-mdb-ripple-init
+       data-mdb-tooltip-init
+       data-mdb-placement="bottom"
+       title="<?php echo \Air\Crud\Locale::t('Add embed'); ?>">
+      <i class="fas fa-anchor"></i>
+    </a>
+    <div class="text-end flex-fill">
+      <span class="badge badge-primary"><?php echo \Air\Crud\Locale::t('Page'); ?> #<span data-admin-form-doc-toolbar-page-number></span></span>
+    </div>
+  </div>
+</div>

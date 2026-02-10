@@ -1,0 +1,27 @@
+<?php
+
+use Air\Form\Element\Group;
+
+/** @var Group $group */
+$group = $this->group;
+?>
+
+<div data-admin-form-element-group-multiple-group-item-container>
+  <div class="d-flex">
+    <div class="flex-grow-1">
+      <?php echo $group; ?>
+    </div>
+    <div class="ms-3">
+      <a class="btn btn-danger px-3"
+         data-mdb-ripple-init
+         data-mdb-tooltip-init
+         data-mdb-placement="bottom"
+         title="<?php echo \Air\Crud\Locale::t('Remove?'); ?>"
+         data-admin-form-element-group-multiple-group-item-remove>
+        <i class="fas fa-remove"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<?php echo $this->partial('form/element/multiple-group/toolbar'); ?>

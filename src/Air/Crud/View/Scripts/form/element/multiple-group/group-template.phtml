@@ -1,0 +1,9 @@
+<?php
+
+use Air\Form\Element\ElementAbstract;
+
+/** @var ElementAbstract $element */
+$element = $this->element;
+?>
+<?php echo $this->partial($element->getElementTemplate()); ?>
+<?php echo $this->partial($element->getErrorTemplate()); ?>

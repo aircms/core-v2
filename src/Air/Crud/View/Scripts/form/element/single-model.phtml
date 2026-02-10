@@ -1,0 +1,131 @@
+<?php
+
+use Air\Form\Element\SingleModel;
+
+/** @var SingleModel $element */
+$element = $this->element;
+
+$value = $element->getValue();
+$name = $element->getName();
+
+$model = $element->getModel();
+$parent = $element->getParent();
+$field = $element->getField();
+
+$hasImage = $element->getModel()->getMeta()->hasProperty('image');
+$hasEnabled = $element->getModel()->getMeta()->hasProperty('enabled');
+$hasLanguage = $element->getModel()->getMeta()->hasProperty('language');
+$hasParent = $element->getModel()->getMeta()->hasProperty($parent ?? '');
+?>
+
+<div data-admin-form-single-model="<?php echo $name; ?>"
+     data-admin-form-single-model-name="<?php echo $element->getModel()::class; ?>">
+
+  <a class="btn btn-primary btn-block" data-admin-form-single-model-add>
+    <i class="fas fa-plus"></i>
+    <?php echo \Air\Crud\Locale::t('Add entity'); ?>
+  </a>
+
+  <div data-admin-form-single-model-list-container>
+    <?php if ($value) : ?>
+      <?php $value = is_string($value) ? $model::fetchOne(['id' => $value]) : $value; ?>
+      <?php if ($value) : ?>
+
+        <input name="<?php echo $name; ?>" value="<?php echo $value->id; ?>" type="hidden" data-admin-select-input/>
+
+        <div class="card mt-3">
+          <div class="card-body p-3 pt-0">
+            <div class="d-flex flex-wrap" data-admin-form-single-model-list>
+
+              <div
+                class="border bmd-border-teal rounded-4 shadow-5-strong bg-body-tertiary mt-3 me-3 p-3 position-relative d-flex flex-row align-items-center admin-form-multiple-model"
+                data-admin-form-single-model-item-id="<?php echo $value->id; ?>"
+                role="button">
+
+                <?php if ($hasEnabled && $value->enabled) : ?>
+                  <div
+                    class="admin-form-multiple-model-activity rounded-pill bg-success position-absolute top-0 start-0"></div>
+                <?php elseif ($hasEnabled && !$value->enabled) : ?>
+                  <div
+                    class="admin-form-multiple-model-activity rounded-pill bg-danger position-absolute top-0 start-0"></div>
+                <?php endif; ?>
+
+                <?php if ($hasImage) : ?>
+                  <div class="bg-image rounded-4 me-3"
+                       data-admin-async-image="<?php echo $value->image?->getSrc(); ?>"></div>
+                <?php endif; ?>
+
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                  <div class="h6 m-0 max-lines-3 small lh-1">
+                    <?php if ($hasParent && $value->{$parent}) : ?>
+                      <?php echo $value->{$field}; ?> ›
+                    <?php endif; ?>
+                    <?php echo $value->{$field}; ?>
+                  </div>
+                  <?php if ($hasLanguage && $value->language?->key) : ?>
+                    <div class="badge badge-primary">
+                      <img src="<?php echo $value->language->image->getSrc(); ?>" class="me-1" style="height: 10px;">
+                      <?php echo strtoupper($value->language->key); ?>
+                    </div>
+                  <?php endif; ?>
+                </div>
+                <a class="btn btn-danger px-3 py-3 d-flex align-items-center ms-3"
+                   data-admin-form-single-model-item-delete>
+                  <i class="fas fa-close"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
+    <?php endif; ?>
+  </div>
+</div>
+
+<template type="text/html" data-admin-form-single-model-template="<?php echo $name; ?>">
+
+  <div class="card mt-3">
+    <div class="card-body p-3 pt-0">
+      <div class="d-flex flex-wrap" data-admin-form-single-model-list>
+
+        <input name="<?php echo $name; ?>" value="{{id}}" type="hidden" data-admin-select-input/>
+
+        <div
+          class="border bmd-border-teal rounded-4 shadow-5-strong bg-body-tertiary mt-3 me-3 p-3 position-relative d-flex flex-row align-items-center admin-form-multiple-model"
+          data-admin-form-single-model-item-id="{{id}}"
+          role="button">
+
+          <?php if ($hasEnabled) : ?>
+            <div
+              class="admin-form-multiple-model-activity rounded-pill bg-success position-absolute top-0 start-0 d-none"
+              data-admin-form-single-model-item-activity="enabled"></div>
+            <div
+              class="admin-form-multiple-model-activity rounded-pill bg-danger position-absolute top-0 start-0 d-none"
+              data-admin-form-single-model-item-activity="disabled"></div>
+          <?php endif; ?>
+
+          <?php if ($hasImage) : ?>
+            <div class="bg-image rounded-4 me-3"
+                 data-admin-async-image="{{image}}"></div>
+          <?php endif; ?>
+
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <div class="h6 m-0 max-lines-3 small lh-1">
+              {{<?php echo $field; ?>}}
+            </div>
+            <?php if ($hasLanguage) : ?>
+              <div class="badge badge-primary">
+                <img src="{{languageImage}}" class="me-1" style="height: 10px;">
+                {{languageKey}}
+              </div>
+            <?php endif; ?>
+          </div>
+          <a class="btn btn-danger px-3 py-3 d-flex align-items-center ms-3"
+             data-admin-form-single-model-item-delete>
+            <i class="fas fa-close"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

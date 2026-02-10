@@ -1,0 +1,83 @@
+<?php
+
+use Air\Form\Element\MultipleText;
+
+/** @var MultipleText $element */
+$element = $this->element;
+
+$value = $element->getValue();
+$name = $element->getName();
+?>
+
+<div data-admin-form-multiple-text="<?php echo $element->getName(); ?>">
+
+  <a class="btn btn-primary btn-block" data-admin-form-multiple-text-add>
+    <i class="fas fa-plus me-1"></i>
+    <?php echo \Air\Crud\Locale::t('Add string'); ?>
+  </a>
+
+  <div class="card mt-3" data-admin-form-multiple-text-sortable-container>
+    <div class="card-body p-3">
+      <div class="row gy-3" data-admin-form-multiple-text-sortable>
+
+        <?php foreach ($element->getValue() as $string) : ?>
+
+          <div class="col-12 d-flex" role="button" data-admin-form-multiple-text-item>
+            <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+              <input type="text"
+                     class="form-control form-control-lg"
+                     id="<?php echo $element->getName(); ?>[]"
+                     name="<?php echo $element->getName(); ?>[]"
+                     value="<?php echo $string; ?>"
+                     <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+
+              <?php if ($hint = ($element->getHint() ?? $element->getLabel())) : ?>
+                <label class="form-label" for="<?php echo $element->getName(); ?>">
+                  <?php echo $hint; ?>
+                </label>
+              <?php endif; ?>
+            </div>
+
+            <a class="btn btn-dark btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-text-sort>
+              <i class="fas fa-sort"></i>
+            </a>
+
+            <a class="btn btn-danger btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-text-remove>
+              <i class="fas fa-close"></i>
+            </a>
+          </div>
+
+        <?php endforeach; ?>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<template type="text/html" data-admin-form-multiple-text-template="<?php echo $element->getName(); ?>">
+
+  <div class="col-12 d-flex" role="button" data-admin-form-multiple-text-item>
+    <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+      <input type="text"
+             class="form-control form-control-lg"
+             id="<?php echo $element->getName(); ?>[]"
+             name="<?php echo $element->getName(); ?>[]"
+             <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+
+      <?php if ($hint = ($element->getHint() ?? $element->getLabel())) : ?>
+        <label class="form-label" for="<?php echo $element->getName(); ?>">
+          <?php echo $hint; ?>
+        </label>
+      <?php endif; ?>
+    </div>
+
+    <a class="btn btn-dark btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-text-sort>
+      <i class="fas fa-sort"></i>
+    </a>
+
+    <a class="btn btn-danger btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-text-remove>
+      <i class="fas fa-close"></i>
+    </a>
+  </div>
+
+</template>

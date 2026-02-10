@@ -1,0 +1,29 @@
+<?php
+
+use Air\Form\Element\Quote;
+
+/** @var Quote $element */
+$element = $this->element;
+$value = $element->getValue() ?? new \Air\Type\Quote();
+?>
+<div class="form-outline bg-body-tertiary" data-mdb-input-init>
+  <input type="text"
+         class="form-control form-control-lg"
+         id="<?php echo $element->getName(); ?>[author]"
+         name="<?php echo $element->getName(); ?>[author]"
+         value="<?php echo htmlspecialchars($value->author); ?>"
+         <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+  <label class="form-label" for="<?php echo $element->getName(); ?>[author]">
+    <?php echo \Air\Crud\Locale::t('Author'); ?>
+  </label>
+</div>
+
+<div class="form-outline bg-body-tertiary mt-3" data-mdb-input-init>
+  <textarea class="form-control"
+            rows="2"
+            id="<?php echo $element->getName(); ?>[quote]"
+            name="<?php echo $element->getName(); ?>[quote]"><?php echo $value->quote; ?></textarea>
+  <label class="form-label" for="<?php echo $element->getName(); ?>[quote]">
+    <?php echo \Air\Crud\Locale::t('Quote'); ?>
+  </label>
+</div>

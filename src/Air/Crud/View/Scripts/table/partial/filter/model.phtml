@@ -1,0 +1,128 @@
+<?php
+
+use Air\Crud\Model\Language;
+use Air\Model\ModelAbstract;
+use Air\Crud\Locale;
+
+/** @var array $filter */
+$filter = $this->filter;
+
+/** @var ModelAbstract $model */
+$model = new $filter['model']();
+
+/** @var string $parent */
+$parent = $filter['parent'] ?? '';
+
+/** @var string $field */
+$field = $filter['field'] ?? null;
+
+/** @var array $cond */
+$cond = $filter['cond'] ?? [];
+
+/** @var array $sort */
+$sort = $filter['sort'] ?? ['enabled' => -1];
+
+if (!$field && $model->getMeta()->hasProperty('title')) {
+  $field = 'title';
+}
+
+if (isset($filter['title'])) {
+  $title = $filter['title'] . ' (' . Locale::t('All') . ')';
+} else {
+  $title = Locale::t('All');
+}
+
+$hasImage = $model->getMeta()->hasProperty('image');
+$hasEnabled = $model->getMeta()->hasProperty('enabled');
+$hasLanguage = $model->getMeta()->hasProperty('language');
+$hasParent = $model->getMeta()->hasProperty($parent);
+?>
+<div class="btn-group w-100 rounded-4" data-admin-select-submit="true" data-admin-select>
+  <button class="btn btn-primary btn-block text-start px-3 admin-select-button"
+          data-mdb-dropdown-init
+          data-mdb-ripple-init
+          data-admin-select-title>
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+    data-mdb-dropdown-init
+    data-mdb-ripple-init></button>
+  <input name="filter[<?php echo $filter['by']; ?>]"
+         value="<?php echo $filter['value']; ?>"
+         type="hidden"
+         data-admin-select-input/>
+  <ul class="dropdown-menu w-100 admin-select-searchable overflow-y-auto">
+    <li class="d-flex align-items-center gap-2">
+      <a class="dropdown-item" role="button" data-admin-select-option>
+        <?php echo $title; ?>
+      </a>
+      <?php if ($hasLanguage) : ?>
+        <div class="d-flex gap-2 pe-2">
+          <div class="badge badge-primary" role="button" data-admin-select-language-reset>
+            <?php echo Locale::t('All'); ?>
+          </div>
+          <?php foreach (Language::fetchAll() as $language) : ?>
+            <div class="badge badge-secondary d-flex align-items-center gap-2" role="button"
+                 data-admin-select-language="<?php echo $language->id; ?>">
+              <?php if ($language->image) : ?>
+                <img src="<?php echo $language->image->getSrc(); ?>" style="height: 10px;">
+              <?php endif; ?>
+              <span class="lh-1"><?php echo strtoupper($language->key); ?></span>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+    </li>
+    <li class="p-2">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="text" class="form-control" data-admin-select-search/>
+        <label class="form-label"><?php echo Locale::t('Search'); ?></label>
+      </div>
+    </li>
+    <?php foreach ($model::fetchAll($cond, $sort) as $rec) : ?>
+      <li>
+        <a class="dropdown-item"
+           role="button"
+           data-value="<?php echo $rec->id; ?>"
+           data-admin-select-option
+           <?php if ($hasLanguage) : ?>data-admin-select-option-language="<?php echo $rec->language?->id; ?>"<?php endif; ?>
+           <?php if ($filter['value'] === $rec->id) : ?>data-selected<?php endif; ?>>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <?php if ($hasImage) : ?>
+                <div class="admin-select-image bg-image rounded-4 me-3"
+                     data-admin-async-image="<?php echo $rec->image?->getSrc(); ?>"></div>
+              <?php endif; ?>
+              <div
+                class="flex-grow-1 text-wrap max-lines-2 pe-3 admin-select-button-title d-flex align-items-center gap-2">
+                <?php if (isset($filter['source'])) : ?>
+                  <?php echo $filter['source']($rec); ?>
+                <?php else : ?>
+                  <?php if ($hasParent && $parent && $rec->{$parent}) : ?>
+                    <?php echo $rec->{$parent}->{$field}; ?> ›
+                  <?php endif; ?>
+                  <?php echo $rec->$field; ?>
+                <?php endif; ?>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 justify-content-between">
+              <?php if ($hasLanguage && $rec->language?->key) : ?>
+                <div class="badge badge-primary d-flex gap-2">
+                  <?php if ($rec->language->image) : ?>
+                    <img src="<?php echo $rec->language->image->getSrc(); ?>" style="height: 10px;">
+                  <?php endif; ?>
+                  <?php echo strtoupper($rec->language->key); ?>
+                </div>
+              <?php endif; ?>
+              <?php if ($hasEnabled) : ?>
+                <i
+                  class="fas fa-<?php if ($rec->enabled) : ?>check text-success<?php else: ?>ban text-danger<?php endif; ?>"></i>
+              <?php endif; ?>
+            </div>
+          </div>
+        </a>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+</div>

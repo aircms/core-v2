@@ -1,0 +1,102 @@
+<?php
+
+use Air\Form\Element\MultipleKeyValue;
+
+/** @var MultipleKeyValue $element */
+$element = $this->element;
+
+$value = $element->getValue();
+$name = $element->getName();
+
+$keyPropertyName = $element->getKeyPropertyName();
+$valuePropertyName = $element->getValuePropertyName();
+
+$keyLabel = $element->getKeyLabel();
+$valueLabel = $element->getValueLabel();
+?>
+
+<div data-admin-form-multiple-key-value="<?php echo $name; ?>">
+
+  <a class="btn btn-primary btn-block" data-admin-form-multiple-key-value-add>
+    <i class="fas fa-plus me-1"></i>
+    <?php echo \Air\Crud\Locale::t('Add pair'); ?>
+  </a>
+
+  <div class="card mt-3" data-admin-form-multiple-key-value-sortable-container>
+    <div class="card-body p-3">
+      <div class="row gy-3" data-admin-form-multiple-key-value-sortable>
+
+        <?php foreach ($value as $keyValue) : ?>
+          <?php $id = rand(0, time()); ?>
+
+          <div class="col-12 d-flex" role="button" data-admin-form-multiple-key-value-item>
+            <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+              <input type="text"
+                     name="<?php echo $name; ?>[<?php echo $id; ?>][<?php echo $keyPropertyName; ?>]"
+                     value="<?php echo $keyValue[$keyPropertyName] ?? ''; ?>"
+                     id="<?php echo $name; ?>[<?php echo $id; ?>][<?php echo $keyPropertyName; ?>]"
+                     class="form-control form-control-lg">
+              <label class="form-label" for="<?php echo $name; ?>[<?php echo $id; ?>][<?php echo $keyPropertyName; ?>]">
+                <?php echo $keyLabel; ?>
+              </label>
+            </div>
+            <div class="form-outline bg-body-tertiary ms-3" data-mdb-input-init>
+              <input type="text"
+                     name="<?php echo $name; ?>[<?php echo $id; ?>][<?php echo $valuePropertyName; ?>]"
+                     value="<?php echo $keyValue[$valuePropertyName] ?? ''; ?>"
+                     id="<?php echo $name; ?>[<?php echo $id; ?>][<?php echo $valuePropertyName; ?>]"
+                     class="form-control form-control-lg">
+
+              <label class="form-label"
+                     for="<?php echo $name; ?>[<?php echo $id; ?>][<?php echo $valuePropertyName; ?>]">
+                <?php echo $valueLabel; ?>
+              </label>
+            </div>
+
+            <a class="btn btn-dark btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-key-value-sort>
+              <i class="fas fa-sort"></i>
+            </a>
+
+            <a class="btn btn-danger btn-lg px-3 ms-3 d-flex align-items-center"
+               data-admin-form-multiple-key-value-remove>
+              <i class="fas fa-close"></i>
+            </a>
+          </div>
+
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<template type="text/html" data-admin-form-multiple-key-value-template="<?php echo $name; ?>">
+
+  <div class="col-12 d-flex" role="button" data-admin-form-multiple-key-value-item>
+    <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+      <input type="text"
+             name="<?php echo $name; ?>[{{id}}][<?php echo $keyPropertyName; ?>]"
+             id="<?php echo $name; ?>[{{id}}][<?php echo $keyPropertyName; ?>]"
+             class="form-control form-control-lg">
+      <label class="form-label" for="<?php echo $name; ?>[{{id}}][<?php echo $keyPropertyName; ?>]">
+        <?php echo $keyLabel; ?>
+      </label>
+    </div>
+    <div class="form-outline bg-body-tertiary ms-3" data-mdb-input-init>
+      <input type="text"
+             name="<?php echo $name; ?>[{{id}}][<?php echo $valuePropertyName; ?>]"
+             id="<?php echo $name; ?>[{{id}}][value]"
+             class="form-control form-control-lg">
+      <label class="form-label" for="<?php echo $name; ?>[{{id}}][<?php echo $valuePropertyName; ?>]">
+        <?php echo $valueLabel; ?>
+      </label>
+    </div>
+
+    <a class="btn btn-dark btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-key-value-sort>
+      <i class="fas fa-sort"></i>
+    </a>
+
+    <a class="btn btn-danger btn-lg px-3 ms-3 d-flex align-items-center" data-admin-form-multiple-key-value-remove>
+      <i class="fas fa-close"></i>
+    </a>
+  </div>
+</template>

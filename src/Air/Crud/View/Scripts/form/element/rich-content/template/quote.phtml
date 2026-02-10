@@ -1,0 +1,35 @@
+<?php
+
+use Air\Type\RichContent;
+
+/** @var \Air\Form\Element\RichContent $element */
+$element = $this->element;
+$name = $element->getName();
+?>
+<template type="text/html"
+        data-admin-form-rich-content-template-name="<?php echo $name; ?>"
+        data-admin-form-rich-content-template="<?php echo RichContent::TYPE_QUOTE; ?>">
+
+  <input type="hidden" name="<?php echo $name; ?>[{{name}}][type]" value="<?php echo RichContent::TYPE_QUOTE; ?>"/>
+
+  <div class="form-outline bg-body-tertiary" data-mdb-input-init>
+    <input type="text"
+           class="form-control form-control-lg"
+           id="<?php echo $name; ?>[{{name}}][value][author]"
+           name="<?php echo $name; ?>[{{name}}][value][author]">
+    <label class="form-label" for="<?php echo $name; ?>[{{name}}][value][author]">
+      <?php echo \Air\Crud\Locale::t('Author'); ?>
+    </label>
+  </div>
+
+  <div class="form-outline bg-body-tertiary mt-3" data-mdb-input-init>
+    <textarea class="form-control"
+              rows="2"
+              id="<?php echo $name; ?>[{{name}}][value][quote]"
+              name="<?php echo $name; ?>[{{name}}][value][quote]"></textarea>
+    <label class="form-label" for="<?php echo $name; ?>[{{name}}][value][quote]">
+      <?php echo \Air\Crud\Locale::t('Quote'); ?>
+    </label>
+  </div>
+
+</template>

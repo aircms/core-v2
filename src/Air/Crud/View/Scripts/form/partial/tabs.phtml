@@ -1,0 +1,21 @@
+<?php
+
+use Air\Form\Form;
+
+/** @var Form $form */
+$form = $this->form;
+
+$groupedElements = $form->getGroupedElements();
+?>
+
+<div class="<?php if (count($groupedElements) === 1) : ?>d-none<?php else: ?>d-flex mb-2<?php endif; ?>"
+     data-admin-tab-nav>
+  <?php foreach ($groupedElements as $title => $group) : ?>
+    <div class="rounded-4 p-3 m-0 me-2 h6 position-relative" role="button" data-mdb-ripple-init>
+      <?php echo $title; ?>
+      <?php if ($group['hasErrors']) : ?>
+        <div class="rounded-pill bg-danger position-absolute end-0 top-0 lh-sm admin-form-tab-has-errors"></div>
+      <?php endif; ?>
+    </div>
+  <?php endforeach; ?>
+</div>

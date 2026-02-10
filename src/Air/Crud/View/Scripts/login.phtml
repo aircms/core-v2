@@ -1,0 +1,79 @@
+<?php
+
+use Air\Cookie;
+use Air\Core\Front;
+
+/** @var string $title */
+$title = $this->title;
+
+/** @var string $theme */
+$theme = Cookie::get('theme') ?? 'dark';
+
+/** @var array $adminConfig */
+$adminConfig = Front::getInstance()->getConfig()['air']['admin'];
+
+/** @var string $favicon */
+$favicon = Front::getInstance()->getConfig()['air']['admin']['favicon'];
+
+/** @var string $returnUrl */
+$returnUrl = $this->returnUrl;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php
+  echo tag('link', attr: ['rel' => 'icon', 'href' => $favicon]);
+  echo tag('meta', attr: ['charset' => 'UTF-8']);
+  echo tag('meta', attr: ['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0']);
+  echo tag('title', content: $adminConfig['title']);
+
+  echo $this->base();
+
+  echo $this->asset([
+    'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
+    'vendor/mdb/light.css',
+    'vendor/mdb/mdb.js',
+    'vendor/jq.js',
+    'css/blur.css',
+    'css/scrollbar.css',
+    'css/transition.css',
+    'js/mdb.js',
+    'js/wait.js',
+    'js/loader.js',
+    'js/login.js'
+  ]); ?>
+</head>
+<body data-mdb-theme="<?php echo Cookie::get('theme') ?? 'dark'; ?>">
+<div class="container">
+  <div class="row justify-content-center mt-4">
+    <div class="col-12 col-lg-4 mt-4">
+      <div class="card fade transition mt-4">
+        <div class="card-body">
+          <h1 class="mb-4"><?php echo $title; ?></h1>
+          <form method="post" data-return-url="<?php echo $returnUrl; ?>">
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="text" id="login" class="form-control" name="login" required/>
+              <label class="form-label" for="login">
+                <?php echo \Air\Crud\Locale::t('Login'); ?>
+              </label>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="password" id="password" class="form-control" required name="password"/>
+              <label class="form-label" for="password">
+                <?php echo \Air\Crud\Locale::t('Password'); ?>
+              </label>
+            </div>
+            <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">
+              <?php echo \Air\Crud\Locale::t('Sign in'); ?>
+            </button>
+            <div class="text-danger bg-danger-subtle rounded-4 mt-4 p-4 py-3 d-none" data-error>
+              <?php echo \Air\Crud\Locale::t('Login or password are incorrect'); ?>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

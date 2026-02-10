@@ -1,0 +1,22 @@
+<?php
+
+use Air\Form\Element\Hidden;
+use Air\Form\Form;
+
+/** @var Form $form */
+$form = $this->form;
+
+$groupedElements = $form->getGroupedElements();
+?>
+
+<?php foreach ($groupedElements as $title => $group) : ?>
+  <div class="rounded-4 py-0 px-3 bg-body-secondary w-100" data-admin-tab-content-item>
+    <?php foreach ($group['elements'] as $element) : ?>
+      <?php if ($element instanceof Hidden) : ?>
+        <?php echo $element; ?>
+      <?php else: ?>
+        <div class="py-3"><?php echo $element; ?></div>
+      <?php endif; ?>
+    <?php endforeach; ?>
+  </div>
+<?php endforeach; ?>

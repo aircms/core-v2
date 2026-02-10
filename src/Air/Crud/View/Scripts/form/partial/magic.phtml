@@ -1,0 +1,53 @@
+<?php
+
+use Air\Crud\Locale;
+use Air\Core\Front;
+
+/** @var bool $isOpenAiEnabled */
+$isOpenAiEnabled = $this->isOpenAiEnabled;
+
+/** @var bool $isDeepSeekEnabled */
+$isDeepSeekEnabled = $this->isDeepSeekEnabled;
+
+/** @var array $structure */
+$structure = $this->structure;
+?>
+
+<?php if ($structure && ($isDeepSeekEnabled || $isOpenAiEnabled)) : ?>
+  <?php
+  /** @var array $storageConfig */
+  $storageConfig = Front::getInstance()->getConfig()['air']['storage'];
+  ?>
+
+  <div class="dropdown ms-2"
+       data-admin-from-manage-magic-container
+       data-admin-form-storage-add-key="<?php echo $storageConfig['key']; ?>"
+       data-admin-form-storage-add-url="<?php echo $storageConfig['url']; ?>">
+    <button class="btn btn-secondary btn-sm dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-mdb-dropdown-init
+            data-mdb-ripple-init>
+      <i class="fa fa-sparkles me-1"></i>
+      <?php echo Locale::t('Do magic'); ?>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <?php if ($isOpenAiEnabled) : ?>
+        <li>
+          <a class="dropdown-item" data-admin-from-manage-magic="openAi" role="button">
+            <i class="fa fa-sparkles me-1"></i>
+            Open AI
+          </a>
+        </li>
+      <?php endif; ?>
+      <?php if ($isOpenAiEnabled) : ?>
+        <li>
+          <a class="dropdown-item" data-admin-from-manage-magic="deepSeek" role="button">
+            <i class="fa fa-sparkles me-1"></i>
+            DeepSeek
+          </a>
+        </li>
+      <?php endif; ?>
+    </ul>
+  </div>
+<?php endif; ?>

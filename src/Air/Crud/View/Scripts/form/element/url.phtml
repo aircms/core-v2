@@ -1,0 +1,29 @@
+<?php
+
+use Air\Form\Element\Url;
+use Air\Crud\Locale;
+
+/** @var Url $element */
+$element = $this->element;
+?>
+<div class="d-flex gap-3" data-admin-form-url-container>
+  <div class="form-outline bg-body-tertiary flex-grow-1" data-mdb-input-init>
+    <input class="form-control form-control-lg"
+           readonly="readonly"
+           type="url"
+           id="<?php echo $element->getName(); ?>"
+           name="<?php echo $element->getName(); ?>"
+           value="<?php echo htmlspecialchars($element->getValue() ?? ''); ?>"
+           <?php if ($element->isAllowNull()) : ?>required<?php endif; ?>>
+
+    <?php if ($hint = ($element->getHint() ?? $element->getLabel())) : ?>
+      <label class="form-label" for="<?php echo $element->getName(); ?>">
+        <?php echo $hint; ?>
+      </label>
+    <?php endif; ?>
+  </div>
+  <button type="button" class="btn btn-primary flex-shrink-0" data-admin-form-url-generate>
+    <i class="fa fa-wand-magic-sparkles fa-regular me-1"></i>
+    <?php echo Locale::t('Generate'); ?>
+  </button>
+</div>

@@ -1,0 +1,44 @@
+<?php
+
+use Air\Type\PageItem;
+
+/** @var PageItem $item */
+$item = $this->item;
+
+$id = uniqid();
+?>
+<div class="item bg-image d-flex justify-content-center align-items-center"
+     style="<?php echo $item->asCss(); ?>"
+     ondblclick="modal.embed('<?php echo $item->getValue()->getSrc(); ?>', '', '', '<?php echo $item->getValue()->getMime(); ?>')"
+     data-admin-form-doc-page-item="<?php echo $id; ?>"
+     data-admin-contextmenu="<?php echo $id; ?>"
+     data-resizable
+     data-draggable>
+  <?php if (str_contains($item->getValue()->getMime(), 'video')) : ?>
+    <i class="fas fa-play text-primary fa-4x shadow-1 opacity-80"></i>
+  <?php endif; ?>
+</div>
+
+<ul class="dropdown-menu shadow-5-strong overflow-hidden" data-admin-contextmenu-target="<?php echo $id; ?>">
+  <li class="p-3 pb-0">
+    <?php echo \Air\Crud\Locale::t('Transparent'); ?>
+    <div class="range" data-mdb-range-init>
+      <input type="range"
+             class="form-range"
+             value="<?php echo $item->getTransparent(); ?>"
+             data-admin-form-doc-page-item-transparent="<?php echo $id; ?>"/>
+    </div>
+  </li>
+  <li>
+    <a class="dropdown-item"
+       role="button"
+       onclick="modal.embed('<?php echo $item->getValue()->getSrc(); ?>', '', '', '<?php echo $item->getValue()->getMime(); ?>')">
+      <i class="fas fa-eye me-1"></i> <?php echo \Air\Crud\Locale::t('View'); ?>
+    </a>
+  </li>
+  <li>
+    <a class="dropdown-item" role="button" data-admin-form-doc-page-item-remove="<?php echo $id; ?>">
+      <i class="fas fa-ban me-1"></i> <?php echo \Air\Crud\Locale::t('Remove?'); ?>
+    </a>
+  </li>
+</ul>
