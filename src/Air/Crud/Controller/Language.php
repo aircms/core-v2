@@ -51,7 +51,7 @@ class Language extends Multiple
     return Generator::full($model, [
       Input::checkbox('isDefault'),
       Input::text('title'),
-      Input::storage('image'),
+      Input::storage('image', allowNull: true),
       Input::text('key', description: '2 symbols, lowercase'),
     ]);
   }

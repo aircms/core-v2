@@ -16,10 +16,49 @@ class Sitemap
 
   private array $urls = [];
 
+  private ?string $host = null;
+
   public function __construct()
   {
     $this->defaultLanguage = Language::one(['isDefault' => true]);
     $this->languages = Language::all();
+  }
+
+  public function setHost(string $host): static
+  {
+    $this->host = $host;
+    return $this;
+  }
+
+  public static function normalizeUrl(string $url): string
+  {
+    return "/" . implode('/', array_filter(explode('/', $url)));
+  }
+
+  public function addLoc(string $loc, int $lastMod, string $priority = '0.80'): static
+  {
+    if (!$lastMod) {
+      $lastMod = time();
+    }
+
+    $url = [
+      'loc' => self::normalizeUrl($loc),
+      'priority' => $priority,
+      'lastmod' => $lastMod,
+      'alternate' => []
+    ];
+
+    foreach ($this->languages as $language) {
+      if ($language->isDefault) {
+        $url['alternate']['x-default'] = self::normalizeUrl($loc);
+      } else {
+        $url['alternate'][$language->key] = self::normalizeUrl($language->key . '/' . $loc);
+      }
+    }
+
+    $this->urls[] = $url;
+
+    return $this;
   }
 
   public function addUrl(array $route, array $params, int $lastMod, string $priority = '0.80'): static
@@ -62,12 +101,22 @@ class Sitemap
     ];
 
     foreach ($this->urls as $url) {
+
+      $loc = $url['loc'];
+
+      if ($this->host) {
+        $loc = $this->host . $url['loc'];
+      }
+
       $xml[] = '<url>';
-      $xml[] = '<loc>' . $url['loc'] . '</loc>';
+      $xml[] = '<loc>' . $loc . '</loc>';
       $xml[] = '<priority>' . $url['priority'] . '</priority>';
       $xml[] = '<lastmod>' . date('c', $url['lastmod']) . '</lastmod>';
 
       foreach ($url['alternate'] as $key => $route) {
+        if ($this->host) {
+          $route = $this->host . $route;
+        }
         $xml[] = '<xhtml:link rel="alternate" hreflang="' . $key . '" href="' . $route . '" />';
       }
 

@@ -6,12 +6,12 @@ use Air\Type\RichContent;
 
 function richContent(
   string|array|null $content,
-  Closure           $fileRenderer = null,
-  Closure           $filesRenderer = null,
-  Closure           $textRenderer = null,
-  Closure           $htmlRenderer = null,
-  Closure           $embedRenderer = null,
-  Closure           $quoteRendered = null,
+  ?Closure          $fileRenderer = null,
+  ?Closure          $filesRenderer = null,
+  ?Closure          $textRenderer = null,
+  ?Closure          $htmlRenderer = null,
+  ?Closure          $embedRenderer = null,
+  ?Closure          $quoteRendered = null,
   ?string           $containerClassName = null,
   ?string           $itemClassName = null,
 ): ?string

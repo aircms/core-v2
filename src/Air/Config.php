@@ -72,7 +72,12 @@ class Config
               'underscore' => false,
               'prefix' => '/assets/air',
             ],
-            'require' => $adminRequire,
+            'require' => array_merge(
+              [
+                'vendor/aircms/core-v2/src/Air/View/Shorts/shorts.php',
+                'vendor/aircms/core-v2/src/Air/Crud/View/Ui/ui.php',
+              ], $adminRequire
+            ),
           ],
         ],
         'api.*' => [
