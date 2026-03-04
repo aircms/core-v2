@@ -124,8 +124,8 @@ class Config
           'db' => [
             'driver' => 'mongodb',
             'servers' => [[
-              'host' => 'localhost',
-              'port' => 27017,
+              'host' => getenv("AIR_BD_HOST") ?: 'localhost',
+              'port' => getenv("AIR_BD_PORT") ?: 27017,
             ]],
             'db' => getenv('AIR_DB_DB')
           ],
