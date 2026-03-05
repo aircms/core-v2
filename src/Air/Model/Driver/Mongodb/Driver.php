@@ -121,25 +121,41 @@ class Driver extends DriverAbstract
     return $data;
   }
 
+  private function mongoConnectionString(): string
+  {
+    $config = $this->getConfig();
+
+    $servers = [];
+
+    foreach ($config['servers'] as $server) {
+      $servers[] = $server['host'] . ':' . $server['port'];
+    }
+
+    $serversString = implode(',', $servers);
+
+    $auth = '';
+    if (!empty($config['user']) && !empty($config['pass'])) {
+      $auth = $config['user'] . ':' . $config['pass'] . '@';
+    }
+
+    $db = $config['db'] ?? '';
+
+    return sprintf(
+      'mongodb://%s%s/%s',
+      $auth,
+      $serversString,
+      $db
+    );
+  }
+
   public function getManager(): Manager
   {
     $managerConfigKey = md5(var_export([], true));
 
     if (empty($this->manager[$managerConfigKey])) {
-
-      $config = $this->getConfig();
-
-      $credentials = null;
-      if (isset($config['user']) && isset($config['pass'])) {
-        $credentials = implode(':', [$config['user'], $config['pass']]) . '@';
-      }
-
-      $host = $config['host'] ?? 'localhost';
-      $port = $config['port'] ?? 27017;
-
-      $servers = $host . ':' . $port . '/' . $config['db'];
-
-      $this->manager[$managerConfigKey] = new Manager('mongodb://' . $credentials . $servers);
+      $this->manager[$managerConfigKey] = new Manager(
+        $this->mongoConnectionString()
+      );
     }
     return $this->manager[$managerConfigKey];
   }
