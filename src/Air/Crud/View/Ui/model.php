@@ -20,5 +20,5 @@ function modelPreview(ModelAbstract $model): string
     $title = span($model->name);
   }
 
-  return horizontal([$image, $title]);
+  return horizontal(space: 2, align: CENTER, content: [$image, $title]);
 }

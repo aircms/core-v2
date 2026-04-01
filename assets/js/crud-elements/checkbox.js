@@ -4,12 +4,11 @@ $(document).ready(() => wait.on('[data-deactivate]', (checkbox) => {
 
     const applyOverlayToInput = ($input, disable) => {
       if ($input.length) {
-        const container = $input.closest('.form-outline');
         if (disable) {
-          container.find('[data-admin-checkbox-overlay]').remove();
-          container.prepend(dataCheckboxOverlay);
+          $input.find('[data-admin-checkbox-overlay]').remove();
+          $input.prepend(dataCheckboxOverlay);
         } else {
-          container.find('[data-admin-checkbox-overlay]').remove();
+          $input.find('[data-admin-checkbox-overlay]').remove();
         }
       }
     };
@@ -20,19 +19,7 @@ $(document).ready(() => wait.on('[data-deactivate]', (checkbox) => {
       const deactivateWhen = $(checkbox).data('deactivate-when');
 
       deactivate.forEach((field) => {
-        if ($('[name="' + field + '"]').length) {
-          applyOverlayToInput($('[name="' + field + '"]'), deactivateWhen === value);
-
-        } else if (field.includes('[]')) {
-          const start = field.split('[]')[0] + "[";
-          const end = "]" + field.split('[]')[1];
-          const multipleContainer = $(checkbox).closest('[data-admin-form-element-group-multiple-group-item-container]');
-          multipleContainer.find('[name]').each((i, input) => {
-            if ($(input).attr('name').startsWith(start) && $(input).attr('name').endsWith(end)) {
-              applyOverlayToInput($(input), deactivateWhen === value);
-            }
-          });
-        }
+        applyOverlayToInput($('[data-form-element-container="' + field + '"]'), deactivateWhen === value);
       });
     } catch {
     }

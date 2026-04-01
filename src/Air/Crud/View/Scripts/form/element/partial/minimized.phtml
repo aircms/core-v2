@@ -11,8 +11,10 @@ if ($element instanceof Hidden) {
   return;
 }
 ?>
-<?php echo $this->partial($element->getElementTemplate()); ?>
-<?php if ($description = $element->getDescription()) : ?>
-  <div class="text-info small mt-1"><?php echo $description; ?></div>
-<?php endif; ?>
-<?php echo $this->partial($element->getErrorTemplate()); ?>
+<div data-form-element-container="<?php echo $element->getName(); ?>">
+  <?php echo $this->partial($element->getElementTemplate()); ?>
+  <?php if ($description = $element->getDescription()) : ?>
+    <div class="text-info small mt-1"><?php echo $description; ?></div>
+  <?php endif; ?>
+  <?php echo $this->partial($element->getErrorTemplate()); ?>
+</div>

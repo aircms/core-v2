@@ -386,3 +386,7 @@ table.csv {
 [data-admin-form-tiny-preview] ol {
   padding-left: 20px !important;
 }
+
+[data-form-element-container] {
+  position: relative;
+}

@@ -231,14 +231,14 @@ class Form
     return $isValid;
   }
 
-  public static function validated(array $data = []): array
+  /**
+   * @param array|null $data
+   * @return array
+   * @throws Validation
+   */
+  public function validateOfFail(?array $data = []): array
   {
-    return (new static())->validateOfFail($data);
-  }
-
-  public function validateOfFail(array $data = []): array
-  {
-    if (!$this->isValid($data)) {
+    if (!$this->isValid($data ?? [])) {
       throw new Validation($this);
     }
     return $this->getValues();
@@ -307,8 +307,23 @@ class Form
     return array_keys($this->getErrorMessages());
   }
 
+  /**
+   * @param array|null $data
+   * @return array
+   * @throws Validation
+   */
+  public static function validated(?array $data = []): array
+  {
+    return (new static())->validateOfFail($data);
+  }
+
   public static function inputs(mixed $data = null, array $elements = []): static
   {
     return new static(['data' => $data], $elements);
+  }
+
+  public static function instance(): static
+  {
+    return new static();
   }
 }

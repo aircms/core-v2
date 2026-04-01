@@ -20,7 +20,7 @@ function horizontal($content, $class = null, $space = SPACE1, $justify = START, 
   return div($content, [
     'd-flex',
     'flex-wrap',
-    'justify-items-' . $justify,
+    'justify-content-' . $justify,
     'align-items-' . $align,
     'gap-' . $space,
     $class
