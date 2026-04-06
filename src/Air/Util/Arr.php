@@ -50,6 +50,18 @@ class Arr
     return $result;
   }
 
+  public static function mapAssoc(array|CursorAbstract|Generator $array, callable $callback): array
+  {
+    $result = [];
+    foreach ($array as $key => $item) {
+      $res = $callback($item, $key);
+      foreach ($res as $k => $v) {
+        $result[$k] = $v;
+      }
+    }
+    return $result;
+  }
+
   /**
    * @template T
    * @param CursorAbstract|array<T> $array

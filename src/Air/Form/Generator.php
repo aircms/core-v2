@@ -19,8 +19,6 @@ use Air\Form\Element\Icon;
 use Air\Form\Element\Meta;
 use Air\Form\Element\Model;
 use Air\Form\Element\MultipleModel;
-use Air\Form\Element\MultiplePage;
-use Air\Form\Element\Page;
 use Air\Form\Element\RichContent;
 use Air\Form\Element\Select;
 use Air\Form\Element\Storage;
@@ -95,8 +93,6 @@ final class Generator
           'content' => null,
           'richContent' => null,
           'embed' => null,
-          'page' => null,
-          'pages' => null
         ],
       ],
       'META settings' => [
@@ -212,8 +208,6 @@ final class Generator
       'content' => Tiny::class,
       'embed' => Embed::class,
       'richContent' => RichContent::class,
-      'page' => Page::class,
-      'pages' => MultiplePage::class,
       'icon' => Icon::class,
       'faIcon' => FaIcon::class,
       default => null,
@@ -434,22 +428,6 @@ final class Generator
       'description' => Locale::t('Input and edit a different content types, such as Html, Text, Images, Quote and Code snippets.'),
       'allowNull' => false,
     ];
-  }
-
-  private static function page(): array
-  {
-    return [
-      'label' => Locale::t('Document'),
-      'description' => Locale::t('Pdf driven similar block.<br>You can resize the canvas and add elements such as:<br><ul><li>' .
-        'Image</li><li>Video</li><li>Document</li><li>Rich text</li><li>Embed</li></ul>')
-    ];
-  }
-
-  private static function pages(): array
-  {
-    return [...self::page(), ...[
-      'label' => Locale::t('Documents'),
-    ]];
   }
 
   private static function icon(): array

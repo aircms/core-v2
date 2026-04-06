@@ -31,7 +31,7 @@ class Tiny {
       {title: 'Heading 5', block: 'h5'},
       {title: 'Paragraph', block: 'p'},
     ],
-    paste_as_text: true,
+    paste_as_text: false,
     object_resizing: true,
     image_caption: true,
     language: $('html').attr('lang') === 'ua' ? 'uk' : 'en',

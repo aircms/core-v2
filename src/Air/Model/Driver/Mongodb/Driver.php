@@ -382,10 +382,9 @@ class Driver extends DriverAbstract
     $batchIndex = 0;
 
     while (true) {
-      $filter = $lastId ? [
-        '_id' => ['$gt' => $lastId],
-        ...$cond
-      ] : $cond;
+      $filter = $lastId
+        ? ['_id' => ['$gt' => $lastId], ...$cond]
+        : $cond;
 
       $count = 0;
       $tailId = null;

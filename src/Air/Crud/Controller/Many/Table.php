@@ -86,10 +86,22 @@ trait Table
         }
 
       } else {
+
+        $modelClassName = $this->getModelClassName();
+        $model = new $modelClassName;
+        $meta = $model->getMeta();
+
+        try {
+          $property = $meta->getPropertyWithName($filter['by']);
+          if ($property && $property->getType() === 'integer') {
+            $filter['value'] = (int)$filter['value'];
+          }
+        } catch (Throwable) {
+        }
+
         $conditions[$filter['by']] = $filter['value'];
       }
     }
-
     return $conditions;
   }
 

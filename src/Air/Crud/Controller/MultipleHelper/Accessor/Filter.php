@@ -86,14 +86,14 @@ class Filter
   }
 
   public static function search(
-    array|string $by = ['search', 'id', 'title', 'subTitle', 'description'],
+    array|string $by = ['search', 'id', 'title', 'subTitle', 'description', 'url'],
     ?string      $value = null
   ): array
   {
     return self::filter(self::SEARCH, $by, $value);
   }
 
-  public static function bool(string $title, string $by, string $true, string $false, ?string $value = null): array
+  public static function bool(?string $title = null, ?string $by = null, string $true = 'Yes', string $false = 'No', ?string $value = null): array
   {
     return self::filter(self::BOOL, $by, $value, $title, $true, $false);
   }

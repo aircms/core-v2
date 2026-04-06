@@ -15,11 +15,11 @@ function vertical($content, $class = true, $space = SPACE1, $justify = START, $a
   ]);
 }
 
-function horizontal($content, $class = null, $space = SPACE1, $justify = START, $align = START): string
+function horizontal($content, $class = null, $space = SPACE1, $justify = START, $align = START, $wrap = true): string
 {
   return div($content, [
     'd-flex',
-    'flex-wrap',
+    $wrap ? 'flex-wrap' : null,
     'justify-content-' . $justify,
     'align-items-' . $align,
     'gap-' . $space,

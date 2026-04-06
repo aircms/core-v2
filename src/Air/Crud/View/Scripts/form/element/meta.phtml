@@ -74,6 +74,17 @@ $name = $element->getName();
           </label>
         </div>
       </div>
+      <div class="col-12">
+        <div class="form-outline bg-body-tertiary" data-mdb-input-init data-text-countable="250">
+          <textarea class="form-control"
+                    rows="2"
+                    id="<?php echo $name; ?>[keywords]"
+                    name="<?php echo $name; ?>[keywords]"><?php echo $value->getKeywords(); ?></textarea>
+          <label class="form-label" for="<?php echo $name; ?>[keywords]">
+            <?php echo \Air\Crud\Locale::t('Keywords'); ?>
+          </label>
+        </div>
+      </div>
     </div>
 
     <div data-admin-form-storage="<?php echo $name; ?>[ogImage]" class="mt-3">

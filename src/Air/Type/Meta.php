@@ -11,6 +11,7 @@ class Meta extends TypeAbstract
 {
   public string $title = '';
   public string $description = '';
+  public string $keywords = '';
   public string $ogTitle = '';
   public string $ogDescription = '';
   public ?File $ogImage = null;
@@ -35,6 +36,11 @@ class Meta extends TypeAbstract
   public function getDescription(): string
   {
     return $this->description;
+  }
+
+  public function getKeywords(): string
+  {
+    return $this->keywords;
   }
 
   public function getOgTitle(): string
@@ -84,6 +90,7 @@ class Meta extends TypeAbstract
       return [
         'title' => $objectData['title'],
         'description' => $objectData['description'],
+        'keywords' => $objectData['keywords'],
         'ogImage' => $objectData['image'],
         'ogTitle' => $objectData['title'],
         'ogDescription' => $objectData['description'],
@@ -93,6 +100,7 @@ class Meta extends TypeAbstract
     return [
       'title' => $this->getTitle(),
       'description' => $this->getDescription(),
+      'keywords' => $this->getKeywords(),
       'ogImage' => $this->getOgImage(),
       'ogTitle' => $this->getOgTitle(),
       'ogDescription' => $this->getOgDescription(),
@@ -154,6 +162,7 @@ class Meta extends TypeAbstract
     $defaults = [
       'title' => null,
       'description' => null,
+      'keywords' => null,
       'image' => null
     ];
 
@@ -207,6 +216,7 @@ class Meta extends TypeAbstract
     return [
       'title' => $this->title,
       'description' => $this->description,
+      'keywords' => $this->keywords,
       'ogTitle' => $this->ogTitle,
       'ogDescription' => $this->ogDescription,
       'ogImage' => $this->ogImage,
