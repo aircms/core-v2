@@ -24,6 +24,7 @@ class Config
     bool    $adminGrouped = false,
     array   $require = [],
     array   $adminRequire = [],
+    bool    $cacheEnabled = false
   ): array
   {
     $appEntryPoint = realpath(dirname($_SERVER['SCRIPT_FILENAME'], 2));
@@ -86,7 +87,10 @@ class Config
           'routes' => $routes,
           'air' => [
             'strictInject' => true,
-            'contexts' => $contextAvailable ? '\\App\\Context' : null
+            'contexts' => $contextAvailable ? '\\App\\Context' : null,
+            'cache' => [
+              'enabled' => $cacheEnabled,
+            ],
           ],
         ],
         '*' => [
@@ -98,6 +102,9 @@ class Config
             'asset' => [
               'underscore' => false,
               'prefix' => '/assets/ui',
+            ],
+            'cache' => [
+              'enabled' => $cacheEnabled,
             ],
           ],
         ]

@@ -344,7 +344,7 @@ final class Front
 
         if (is_array($content)) {
           $content = json_encode($content);
-          $this->response->setHeader('Content-type', 'application/json');
+          // $this->response->setHeader('Content-Type', 'application/json');
 
         } else if ($this->view->isLayoutEnabled() && $needLayout) {
           $this->view->setContent($content ?? '');

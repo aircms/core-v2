@@ -33,6 +33,11 @@ class Phrase extends ModelAbstract
 
   public static function t(string $key, ?Language $language = null): string
   {
+    $key = trim($key);
+    if (!mb_strlen($key)) {
+      return $key;
+    }
+
     if (!self::$phrases) {
       self::updatePhrases();
     }
@@ -46,7 +51,6 @@ class Phrase extends ModelAbstract
     }
 
     $languageData = $language->getData();
-    $key = trim($key);
 
     if (isset(self::$phrases[$key . $languageData['id']])) {
       return self::$phrases[$key . $languageData['id']];
