@@ -9,6 +9,11 @@ $(document).ready(() => {
   $(document).on('submit', '[data-admin-from-manage]', (e) => {
     $.post(location.href, $(e.currentTarget).serialize())
       .done((response) => {
+        try {
+          responseJson = JSON.parse(response);
+          response = responseJson;
+        } catch {
+        }
 
         if (typeof response === 'string') {
           $(nav.layoutSelector).html(response);

@@ -21,9 +21,12 @@ abstract class DocumentAbstract implements ArrayAccess
 
   public function populate(array $data, bool $fromSet = true): void
   {
-    foreach ($this->getModel()->getMeta()->getProperties() as $property) {
-      if (isset($data[$property->getName()])) {
-        $this->setProperty($property, $data[$property->getName()], $fromSet);
+    $meta = $this->getModel()->getMeta();
+    foreach ($data as $key => $value) {
+      try {
+        $property = $meta->getPropertyWithName($key);
+        $this->setProperty($property, $value, $fromSet);
+      } catch (\Throwable) {
       }
     }
   }
