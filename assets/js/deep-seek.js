@@ -12,11 +12,15 @@ const deepSeek = new class {
             loader.show();
             $.post('/' + window.deepSeek + "/ask", deepSeekForm.serialize())
               .done((content) => {
-                if (!content?.answer?.length) {
-                  notify.show("DeepSeek confused about the answer, please try again.", {style: this.styles.danger});
-                  return;
+                try {
+                  content = JSON.parse(content);
+                  if (!content?.answer?.length) {
+                    notify.danger("DeepSeek confused about the answer, please try again.");
+                    return;
+                  }
+                  deepSeekForm.find('[name="value"]').val(content.answer);
+                } catch {
                 }
-                deepSeekForm.find('[name="value"]').val(content.answer);
               })
               .fail((err) => notify.danger("Something went wrong with DeepSeek"))
               .always(() => loader.hide())
