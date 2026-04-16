@@ -6,11 +6,13 @@ namespace Air\Core;
 
 class Plugin
 {
-  public function preRun(Request $request, Response $response, Router $router): void
+  public function preRun(Request $request, Response $response, Router $router): bool
   {
+    return true;
   }
 
-  public function postRun(Request $request, Response $response, Router $router): void
+  public function postRun(Request $request, Response $response, Router $router): bool
   {
+    return true;
   }
 }

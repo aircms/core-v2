@@ -305,58 +305,63 @@ final class Front
         }
       }
 
+      $continue = true;
+
       foreach ($plugins as $plugin) {
-        $plugin->preRun($this->request, $this->response, $this->router);
+        if ($continue) {
+          $continue = $plugin->preRun($this->request, $this->response, $this->router);
+        }
       }
+      if ($continue) {
+        if (is_callable([$controller, $this->router->getAction()])) {
 
-      $controller->init();
+          $controller->init();
 
-      if (is_callable([$controller, $this->router->getAction()])) {
+          if (in_array($this->router->getAction(), get_class_methods(Controller::class))) {
+            throw new ActionMethodIsReserved($this->router->getAction());
+          }
 
-        if (in_array($this->router->getAction(), get_class_methods(Controller::class))) {
-          throw new ActionMethodIsReserved($this->router->getAction());
+          $content = call_user_func_array(
+            [$controller, $this->router->getAction()],
+            $this->inject($controller, $this->router, $this->request)
+          );
+
+          $needLayout = true;
+
+          if (!is_null($content)) {
+            $needLayout = false;
+          }
+
+          $controller->postRun();
+
+          if (is_null($content) && $this->view->isAutoRender()) {
+            $content = $this->view->render();
+          }
+
+          if (is_null($content)) {
+            $content = $this->view->getContent();
+          }
+
+          if (is_object($content) && method_exists($content, 'toArray')) {
+            $content = $content->toArray();
+          }
+
+          if (is_array($content)) {
+            $content = json_encode($content);
+
+          } else if ($this->view->isLayoutEnabled() && $needLayout) {
+            $this->view->setContent($content ?? '');
+            $content = $this->view->renderLayout();
+          }
+
+          $this->response->setBody($content);
+
+          foreach ($plugins as $plugin) {
+            $plugin->postRun($this->request, $this->response, $this->router);
+          }
+        } else {
+          throw new ActionMethodWasNotFound($this->router->getAction());
         }
-
-        $content = call_user_func_array(
-          [$controller, $this->router->getAction()],
-          $this->inject($controller, $this->router, $this->request)
-        );
-
-        $needLayout = true;
-
-        if (!is_null($content)) {
-          $needLayout = false;
-        }
-
-        $controller->postRun();
-
-        if (is_null($content) && $this->view->isAutoRender()) {
-          $content = $this->view->render();
-        }
-
-        if (is_null($content)) {
-          $content = $this->view->getContent();
-        }
-
-        if (is_object($content) && method_exists($content, 'toArray')) {
-          $content = $content->toArray();
-        }
-
-        if (is_array($content)) {
-          $content = json_encode($content);
-
-        } else if ($this->view->isLayoutEnabled() && $needLayout) {
-          $this->view->setContent($content ?? '');
-          $content = $this->view->renderLayout();
-        }
-
-        $this->response->setBody($content);
-
-        foreach ($plugins as $plugin) {
-          $plugin->postRun($this->request, $this->response, $this->router);
-        }
-      } else {
-        throw new ActionMethodWasNotFound($this->router->getAction());
       }
 
       return $this->render($this->response);

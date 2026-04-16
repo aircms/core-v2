@@ -104,6 +104,44 @@ class Cache extends ModelAbstract
     return $content;
   }
 
+  public static function set(mixed $key, int $lifetime, mixed $data): void
+  {
+    if (!(Front::getInstance()->getConfig()['air']['cache']['enabled'] ?? false)) {
+      return;
+    }
+
+    if (!$data) {
+      return;
+    }
+
+    $key = md5(serialize($key));
+
+    $cache = new self();
+    $cache->key = $key;
+    $cache->value = json_encode($data);
+    $cache->lifetime = time() + $lifetime;
+
+    $cache->save();
+  }
+
+  public static function get(mixed $key): mixed
+  {
+    if (!(Front::getInstance()->getConfig()['air']['cache']['enabled'] ?? false)) {
+      return null;
+    }
+
+    $key = md5(serialize($key));
+    $data = self::one(['key' => $key]);
+
+    if ($data) {
+      if ($data->lifetime >= time()) {
+        return json_decode($data->value, true);
+      }
+      $data->remove();
+    }
+    return null;
+  }
+
   private static function getContent(Closure $fn): mixed
   {
     ob_start();

@@ -65,10 +65,14 @@ wait.on('[data-accessory-translate-deep-seek]', (el) => $(el).click(() => {
   loader.show();
   $.post('/' + window.deepSeek + '/phrase', {phrase, language: getLanguage()})
     .done((value) => {
-      if (value.translation) {
-        applyAccessoryValue(accessoryItem, value.translation);
-        notify.success(locale('Translation replaced'));
-        return;
+      try {
+        value = JSON.parse(value);
+        if (value.translation) {
+          applyAccessoryValue(accessoryItem, value.translation);
+          notify.success(locale('Translation replaced'));
+          return;
+        }
+      } catch {
       }
       notify.danger('Unexpected error during getting translation');
     })
