@@ -60,7 +60,7 @@ interface ModelInterface
 
   public static function update(array|string|int $cond = [], array $data = []): int;
 
-  public static function iterate(callable $callback, int $batchSize = 1, array $cond = []): void;
+  public static function iterate(callable $callback, int $batchSize = 1, array $cond = [], array $map = []): void;
 
   public function getData(): array;
 

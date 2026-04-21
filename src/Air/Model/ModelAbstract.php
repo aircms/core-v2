@@ -105,7 +105,7 @@ class ModelAbstract implements ModelInterface, ArrayAccess
     return self::__callStatic(__FUNCTION__, func_get_args());
   }
 
-  public static function iterate(callable $callback, int $batchSize = 1, array $cond = []): void
+  public static function iterate(callable $callback, int $batchSize = 1, array $cond = [], array $map = []): void
   {
     self::__callStatic(__FUNCTION__, func_get_args());
   }

@@ -373,7 +373,7 @@ class Driver extends DriverAbstract
     return 0;
   }
 
-  public function iterate(callable $callback, int $batchSize = 1, array $cond = []): void
+  public function iterate(callable $callback, int $batchSize = 1, array $cond = [], array $map = []): void
   {
     /** @var ModelAbstract $model */
     $modelClassName = $this->getModel()->getModelClassName();
@@ -389,7 +389,7 @@ class Driver extends DriverAbstract
       $count = 0;
       $tailId = null;
 
-      $cursor = $modelClassName::fetchAll($filter, count: $batchSize);
+      $cursor = $modelClassName::fetchAll($filter, count: $batchSize, map: $map);
 
       foreach ($cursor as $doc) {
         $callback($doc, $batchIndex, $count);
