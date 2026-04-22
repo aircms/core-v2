@@ -94,6 +94,9 @@ class Email
 
   protected static function sendSmtp(EmailQueue $message): bool
   {
+    $message->status = EmailQueue::STATUS_IN_PROGRESS;
+    $message->save();
+
     $settings = EmailSettings::singleOne();
     $mail = new PHPMailer(true);
 

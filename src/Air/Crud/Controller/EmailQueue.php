@@ -52,8 +52,10 @@ class EmailQueue extends Multiple
           badge(format($emailQueue->when), DARK),
           match ($emailQueue->status) {
             \Air\Crud\Model\EmailQueue::STATUS_NEW => badge(Locale::t('Planned'), WARNING),
+            \Air\Crud\Model\EmailQueue::STATUS_IN_PROGRESS => badge(Locale::t('In progress'), WARNING),
             \Air\Crud\Model\EmailQueue::STATUS_SUCCESS => badge(Locale::t('Success'), SUCCESS),
             \Air\Crud\Model\EmailQueue::STATUS_FAIL => badge(Locale::t('Fail'), DANGER),
+            default => badge(Locale::t('Unknown'), SECONDARY),
           }
         ]);
       }),

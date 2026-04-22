@@ -23,6 +23,7 @@ use Air\Model\ModelAbstract;
 class EmailQueue extends ModelAbstract
 {
   const string STATUS_NEW = 'new';
+  const string STATUS_IN_PROGRESS = 'in-progress';
   const string STATUS_SUCCESS = 'success';
   const string STATUS_FAIL = 'fail';
 }
