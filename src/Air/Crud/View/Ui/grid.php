@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-function row($content = null, $class = null, $attr = null, $bgImage = null, $gt = SPACE1): string
+function row($content = null, $class = null, $attr = null, $bgImage = null, $g = SPACE1): string
 {
   $class = (array)$class ?? [];
-  $class[] = 'row gt-' . $gt;
+  $class[] = 'row g-' . $g;
 
   return div($content, $class, $attr, bgImage: $bgImage);
 }
