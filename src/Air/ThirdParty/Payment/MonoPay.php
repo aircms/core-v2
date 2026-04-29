@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Air\ThirdParty\Payment;
 
 use Air\Http\Request;
-use Air\Log;
+use Air\Util\Arr;
 use Exception;
 use InvalidArgumentException;
 use Throwable;
@@ -47,6 +47,7 @@ class MonoPay extends Payment
     string $description,
     string $redirect,
     string $callback,
+    array  $items = []
   ): Invoice
   {
     $request = [
@@ -55,8 +56,11 @@ class MonoPay extends Payment
       'webHookUrl' => $callback,
       'merchantPaymInfo' => [
         'reference' => $orderId,
-        'destination' => $description
-      ]
+        'destination' => $description,
+        'basketOrder' => Arr::map($items, function (Product $product) {
+          return $product->toArray();
+        }),
+      ],
     ];
 
     $response = Request::post(

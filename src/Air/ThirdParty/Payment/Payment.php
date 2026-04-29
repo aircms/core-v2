@@ -23,7 +23,8 @@ abstract class Payment
     float  $amount,
     string $description,
     string $redirect,
-    string $callback
+    string $callback,
+    array  $items = []
   ): Invoice;
 
   abstract public function validate(

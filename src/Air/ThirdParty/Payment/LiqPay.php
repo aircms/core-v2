@@ -54,6 +54,7 @@ class LiqPay extends Payment
     string $description,
     string $redirect,
     string $callback,
+    array  $items = []
   ): Invoice
   {
     $request = [
