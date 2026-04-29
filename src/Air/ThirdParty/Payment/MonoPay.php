@@ -58,7 +58,14 @@ class MonoPay extends Payment
         'reference' => $orderId,
         'destination' => $description,
         'basketOrder' => Arr::map($items, function (Product $product) {
-          return $product->toArray();
+          return [
+            'name' => $product->name,
+            'qty' => $product->qty,
+            'sum' => ceil($product->sum * 100),
+            'code' => $product->code,
+            'icon' => $product->image,
+            'discounts' => $product->discounts
+          ];
         }),
       ],
     ];
